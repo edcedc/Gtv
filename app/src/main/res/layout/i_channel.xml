@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/px30"
+    android:paddingRight="@dimen/px30"
+    android:paddingTop="@dimen/px30">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="4dp"
+        android:layout_height="13dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintBottom_toTopOf="@id/tv_title"
+        android:background="@color/orange_F87D2B"   />
+
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/Tv14black"
+        android:layout_marginLeft="@dimen/px20"
+        app:layout_constraintLeft_toRightOf="@+id/view"/>
+
+    <com.yc.gtv.weight.WithScrollGridView
+        android:id="@+id/gridView"
+        android:layout_marginTop="@dimen/px30"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3"
+        android:horizontalSpacing="@dimen/px20"/>
+
+</android.support.constraint.ConstraintLayout>

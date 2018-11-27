@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/black_f8f8f8"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:paddingLeft="@dimen/px50"
+        android:paddingRight="@dimen/px20"
+        android:paddingTop="@dimen/px20"
+        android:paddingBottom="@dimen/px20"
+        android:id="@+id/tv_title"
+        android:background="?android:selectableItemBackground"
+        android:textColor="@color/black_666666"
+        android:layout_width="match_parent"
+        android:drawableRight="@mipmap/yjmx_more"
+        style="@style/Tv13black" />
+
+</android.support.constraint.ConstraintLayout>

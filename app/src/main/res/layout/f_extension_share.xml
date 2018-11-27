@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/tg_share_bg"
+        android:orientation="vertical" >
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="top"
+            android:layout_marginTop="@dimen/px30"
+            android:theme="@style/AppTheme.AppBarLight"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@mipmap/back"
+            app:popupTheme="@style/AppTheme.Popup"
+            app:subtitleTextColor="@color/colorAccent"
+            app:titleTextColor="@color/colorAccent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/extension_share"
+                android:textColor="@color/white"
+                android:textSize="19sp" />
+
+            <FrameLayout
+                android:id="@+id/top_right_fy"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:paddingLeft="20dp"
+                android:paddingRight="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+
+            </FrameLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+
+        <LinearLayout
+            android:padding="@dimen/px30"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@mipmap/tg_share_before">
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/download_app"
+                android:layout_gravity="center"
+                style="@style/Tv14black"
+                android:textColor="@color/white"/>
+
+            <FrameLayout
+                android:layout_marginTop="@dimen/px30"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_zking"
+                    android:layout_margin="@dimen/px10"
+                    android:layout_width="@dimen/px380"
+                    android:layout_height="@dimen/px380" />
+
+            </FrameLayout>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_name"
+                android:layout_marginTop="@dimen/px40"
+                android:layout_gravity="center"
+                style="@style/Tv14black"
+                android:textColor="@color/white"/>
+
+
+            <android.support.v7.widget.AppCompatTextView
+                android:text="@string/my_extension_code"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/px20"
+                style="@style/Tv14black"
+                android:textColor="@color/white"/>
+
+        </LinearLayout>
+
+        <com.flyco.roundview.RoundTextView
+            style="@style/Tv14black"
+            android:id="@+id/bt_save"
+            app:rv_backgroundColor="@color/reb_FC739D"
+            android:paddingTop="@dimen/px30"
+            android:paddingBottom="@dimen/px30"
+            android:paddingLeft="@dimen/px50"
+            app:rv_cornerRadius="@dimen/px10"
+            android:paddingRight="@dimen/px50"
+            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginBottom="@dimen/px60"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="@string/save_img"
+            android:textColor="@color/white"/>
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/bt_copy"
+            style="@style/Tv14black"
+            android:layout_marginRight="@dimen/px30"
+            android:layout_marginBottom="@dimen/px60"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:rv_backgroundColor="@color/blue_8EB1F7"
+            android:paddingTop="@dimen/px30"
+            android:paddingBottom="@dimen/px30"
+            android:paddingLeft="@dimen/px50"
+            app:rv_cornerRadius="@dimen/px10"
+            android:paddingRight="@dimen/px50"
+            android:text="@string/copy_link"
+            android:textColor="@color/white"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

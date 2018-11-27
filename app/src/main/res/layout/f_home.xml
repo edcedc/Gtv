@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tl="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_search"/>
+
+        <com.yc.gtv.weight.LoadDataLayout
+            android:id="@+id/swipeLoadDataLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.flyco.tablayout.SlidingTabLayout
+                    android:id="@+id/tb_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    tl:tl_indicator_color="@color/reb_FC739D"
+                    tl:tl_indicator_width="20dp"
+                    tl:tl_tab_padding="15dp"
+                    tl:tl_tab_space_equal="true"
+                    tl:tl_textsize="15sp"
+                    tl:tl_textSelectColor="@color/black_333333"
+                    tl:tl_textUnselectColor="@color/black_666666" />
+
+                <com.yc.gtv.weight.NoScrollViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+
+            </LinearLayout>
+
+        </com.yc.gtv.weight.LoadDataLayout>
+
+    </LinearLayout>
+</layout>

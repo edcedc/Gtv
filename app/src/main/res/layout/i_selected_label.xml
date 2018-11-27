@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" >
+
+    <com.flyco.roundview.RoundTextView
+        android:gravity="center"
+        android:layout_margin="@dimen/px10"
+        android:layout_gravity="center"
+        android:id="@+id/tv_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:textColor="@color/reb_FC739D"
+        android:textSize="12sp"
+        app:rv_strokeColor="@color/reb_FC739D"
+        app:rv_strokeWidth="@dimen/px1"
+        />
+
+    <ImageView
+        android:layout_gravity="right"
+        android:background="@mipmap/pd_type_delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</FrameLayout>

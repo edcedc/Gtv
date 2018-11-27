@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_top" />
+
+        <com.yc.gtv.weight.LoadDataLayout
+            android:id="@+id/swipeLoadDataLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fillViewport="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/px2"
+                            android:layout_marginRight="@dimen/px2"
+                            android:layout_marginTop="@dimen/px10"
+                            android:background="@drawable/dotted_line"
+                            android:orientation="horizontal">
+
+                            <com.flyco.roundview.RoundLinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/px50"
+                                android:paddingLeft="@dimen/px20"
+                                android:paddingRight="@dimen/px20"
+                                android:paddingTop="@dimen/px50">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/tv_month_promotion_number"
+                                    style="@style/Tv14gray" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/Tv14gray"
+                                    android:layout_marginTop="@dimen/px50"
+                                    android:text="@string/promotion_number" />
+
+                            </com.flyco.roundview.RoundLinearLayout>
+
+                            <View
+                                style="@style/divider_1"
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/px50"
+                                android:layout_marginTop="@dimen/px50" />
+
+                            <com.flyco.roundview.RoundLinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/px50"
+                                android:paddingLeft="@dimen/px20"
+                                android:paddingRight="@dimen/px20"
+                                android:paddingTop="@dimen/px50">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/tv_month_promotion_member_number"
+                                    style="@style/Tv14gray"
+                                    android:layout_gravity="center" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/Tv14gray"
+                                    android:layout_marginTop="@dimen/px50"
+                                    android:text="@string/promotion_member_number" />
+
+                            </com.flyco.roundview.RoundLinearLayout>
+
+                            <View
+                                style="@style/divider_1"
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/px50"
+                                android:layout_marginTop="@dimen/px50" />
+
+                            <com.flyco.roundview.RoundLinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:paddingBottom="@dimen/px50"
+                                android:paddingLeft="@dimen/px20"
+                                android:paddingRight="@dimen/px20"
+                                android:paddingTop="@dimen/px50">
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/tv_month_promotion_price"
+                                    style="@style/Tv14gray"
+                                    android:layout_gravity="center" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    style="@style/Tv14gray"
+                                    android:layout_marginTop="@dimen/px50"
+                                    android:text="@string/promotion_member_price2" />
+
+                            </com.flyco.roundview.RoundLinearLayout>
+
+                        </LinearLayout>
+
+                        <com.yc.gtv.weight.WithScrollExpandableListView
+                            android:id="@+id/listView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/px10"
+                            android:groupIndicator="@null" />
+
+                    </LinearLayout>
+
+                </android.support.v4.widget.NestedScrollView>
+
+            </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+        </com.yc.gtv.weight.LoadDataLayout>
+
+    </LinearLayout>
+
+</layout>

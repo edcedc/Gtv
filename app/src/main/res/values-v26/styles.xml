@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Tv12black" parent="TextStyle">
+        <item name="android:textColor">@color/black_333333</item>
+        <item name="android:textSize">@dimen/size24</item>
+    </style>
+
+    <style name="Tv13black" parent="TextStyle">
+        <item name="android:textColor">@color/black_333333</item>
+        <item name="android:textSize">@dimen/size26</item>
+    </style>
+
+    <style name="Tv14black" parent="TextStyle">
+        <item name="android:textColor">@color/black_333333</item>
+        <item name="android:textSize">@dimen/size28</item>
+    </style>
+
+    <style name="Tv16black" parent="TextStyle">
+        <item name="android:textColor">@color/black_333333</item>
+        <item name="android:textSize">@dimen/size32</item>
+    </style>
+
+    <style name="Tv12gray" parent="TextStyle">
+        <item name="android:textColor">@color/black_666666</item>
+        <item name="android:textSize">@dimen/size24</item>
+    </style>
+
+    <style name="Tv13gray" parent="TextStyle">
+        <item name="android:textColor">@color/black_666666</item>
+        <item name="android:textSize">@dimen/size26</item>
+    </style>
+
+    <style name="Tv14gray" parent="TextStyle">
+        <item name="android:textColor">@color/black_666666</item>
+        <item name="android:textSize">@dimen/size28</item>
+    </style>
+
+    <style name="Tv16gray" parent="TextStyle">
+        <item name="android:textColor">@color/black_999999</item>
+        <item name="android:textSize">@dimen/size32</item>
+    </style>
+
+    <style name="TextStyle">
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <!--<item name="android:autoSizeTextType">uniform</item>-->    <!--即可自适应  宽度 < 8 > 18-->
+
+        <!--<item name="android:autoSizeMinTextSize">8dp</item>-->
+        <!--<item name="android:autoSizeMaxTextSize">18dp</item>-->
+        <!--<item name="android:gravity">center</item>-->
+        <!--<item name="android:maxLines">3</item>-->
+        <!--<item name="android:ellipsize">end</item>-->
+    </style>
+</resources>

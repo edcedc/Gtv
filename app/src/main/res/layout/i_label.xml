@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.AppCompatTextView
+    android:id="@+id/tv_name"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="@dimen/px40"
+    android:drawablePadding="@dimen/px40"
+    android:drawableTop="@mipmap/my_con_ic01"
+    style="@style/Tv12black">
+
+</android.support.v7.widget.AppCompatTextView>

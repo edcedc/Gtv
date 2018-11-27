@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/login_bg">
+
+        <FrameLayout
+            android:id="@+id/fy_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/px60">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/back" />
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_login"
+            style="@style/Tv16black"
+            android:layout_marginTop="@dimen/px130"
+            android:drawableTop="@mipmap/signin_word"
+            android:text="@string/register1"
+            android:textColor="@color/white"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.flyco.roundview.RoundLinearLayout
+            android:id="@+id/ly_pp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginRight="@dimen/px30"
+            android:layout_marginTop="@dimen/px100"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/tv_login"
+            app:rv_backgroundColor="@color/white"
+            app:rv_cornerRadius="@dimen/px10">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px10"
+                android:layout_marginLeft="@dimen/px50"
+                android:layout_marginRight="@dimen/px50"
+                android:layout_marginTop="@dimen/px10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px30"
+                    android:background="@mipmap/login_phone" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="@string/input_phone"
+                    android:inputType="number"
+                    android:maxLength="11"
+                    android:padding="@dimen/px20"
+                    android:textColor="@color/black_999999"
+                    android:textColorHint="@color/black_999999"
+                    android:textSize="@dimen/px32" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/divider_1"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px20" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px10"
+                android:layout_marginLeft="@dimen/px50"
+                android:layout_marginRight="@dimen/px50"
+                android:layout_marginTop="@dimen/px10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px30"
+                    android:background="@mipmap/signin_yzm" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/input_code"
+                    android:inputType="number"
+                    android:maxLength="6"
+                    android:padding="@dimen/px20"
+                    android:textColor="@color/black_999999"
+                    android:textColorHint="@color/black_999999"
+                    android:textSize="@dimen/px32" />
+
+                <com.flyco.roundview.RoundTextView
+                    android:id="@+id/bt_code"
+                    style="@style/Tv12black"
+                    android:ems="6"
+                    android:gravity="center"
+                    android:padding="@dimen/px10"
+                    android:text="@string/get_code"
+                    android:textColor="@color/white"
+                    app:rv_backgroundColor="@color/reb_FC739D" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/divider_1"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px20" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px10"
+                android:layout_marginLeft="@dimen/px50"
+                android:layout_marginRight="@dimen/px50"
+                android:layout_marginTop="@dimen/px10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px30"
+                    android:background="@mipmap/login_mm" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_pwd"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/input_pwd"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    android:padding="@dimen/px20"
+                    android:textColor="@color/black_999999"
+                    android:textColorHint="@color/black_999999"
+                    android:textSize="@dimen/px32" />
+
+                <CheckBox
+                    android:id="@+id/iv_pwd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:button="@drawable/cb_pwd" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/divider_1"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px20" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/px10"
+                android:layout_marginLeft="@dimen/px50"
+                android:layout_marginRight="@dimen/px50"
+                android:layout_marginTop="@dimen/px10"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px30"
+                    android:background="@mipmap/login_mm" />
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/et_pwd1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/please_pwd1"
+                    android:inputType="textPassword"
+                    android:maxLength="16"
+                    android:padding="@dimen/px20"
+                    android:textColor="@color/black_999999"
+                    android:textColorHint="@color/black_999999"
+                    android:textSize="@dimen/px32" />
+
+                <CheckBox
+                    android:id="@+id/iv_pwd1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:button="@drawable/cb_pwd" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/divider_1"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px20" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_invitation_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px30"
+                android:layout_marginRight="@dimen/px40"
+                android:background="@null"
+                android:hint="@string/input_invitation_code"
+                android:padding="@dimen/px20"
+                android:textColor="@color/black_999999"
+                android:textColorHint="@color/black_999999"
+                android:textSize="@dimen/px26" />
+
+            <View
+                style="@style/divider_1"
+                android:layout_marginBottom="@dimen/px40"
+                android:layout_marginLeft="@dimen/px20"
+                android:layout_marginRight="@dimen/px20" />
+
+        </com.flyco.roundview.RoundLinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/ly_cb"
+            android:layout_marginLeft="@dimen/px40"
+            android:layout_marginRight="@dimen/px40"
+            android:layout_marginTop="@dimen/px40"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ly_pp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:text="注册即表示同意并遵守"
+                android:paddingLeft="@dimen/px20"
+                android:id="@+id/cb_submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:textSize="@dimen/px28"
+                android:button="@drawable/cb_select" />
+
+            <TextView
+                android:id="@+id/tv_agreement"
+                android:text="《用户注册协议》"
+                android:textColor="@color/reb_FC739D"
+                style="@style/Tv14gray" />
+
+        </LinearLayout>
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/bt_submit"
+            style="@style/RoundTextView"
+            android:layout_marginTop="@dimen/px60"
+            android:text="@string/register"
+            android:textColor="@color/black_333333"
+            app:layout_constraintTop_toBottomOf="@id/ly_cb"
+            app:rv_backgroundColor="@color/white"
+            app:rv_backgroundPressColor="@color/white_f4f4f4"
+            app:rv_cornerRadius="@dimen/px10" />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

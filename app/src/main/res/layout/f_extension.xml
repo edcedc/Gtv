@@ -1,0 +1,496 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.yanzhenjie.sofia.StatusView
+            android:id="@+id/status_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccent"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@mipmap/my_con_ic06" />
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar2"
+                    android:visibility="invisible"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="@dimen/px30"
+                    android:theme="@style/AppTheme.AppBarLight"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:navigationIcon="@mipmap/back"
+                    app:popupTheme="@style/AppTheme.Popup"
+                    app:subtitleTextColor="@color/colorAccent"
+                    app:titleTextColor="@color/colorAccent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/extension"
+                        android:textColor="@color/white"
+                        android:textSize="19sp" />
+
+                    <FrameLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@mipmap/tg_nav_share"
+                            android:textColor="@color/white"
+                            android:textSize="12sp" />
+
+                    </FrameLayout>
+
+                </android.support.v7.widget.Toolbar>
+
+                <ImageView
+                    android:id="@+id/iv_extension"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/px30"
+                    android:background="@mipmap/tg_ewm"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar2" />
+
+                <FrameLayout
+                    android:id="@+id/fy_head"
+                    android:layout_width="@dimen/px204"
+                    android:layout_height="@dimen/px204"
+                    android:layout_marginTop="@dimen/px20"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/toolbar2">
+
+                    <com.yc.gtv.weight.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@color/white" />
+
+                    <com.yc.gtv.weight.CircleImageView
+                        android:id="@+id/iv_head"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/px10"
+                        android:src="@mipmap/my_pic_wel" />
+
+                </FrameLayout>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_name"
+                    style="@style/Tv14black"
+                    android:layout_marginTop="@dimen/px30"
+                    android:textColor="@color/white"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/fy_head" />
+
+                <LinearLayout
+                    android:id="@+id/ly_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px20"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name">
+
+                    <android.support.v7.widget.AppCompatTextView
+                        style="@style/Tv14black"
+                        android:text="@string/invitation_code"
+                        android:textColor="@color/reb_FC739D" />
+
+                    <com.flyco.roundview.RoundTextView
+                        android:id="@+id/tv_code"
+                        style="@style/Tv14black"
+                        android:paddingLeft="@dimen/px10"
+                        android:gravity="center"
+                        android:paddingRight="@dimen/px10"
+                        app:rv_strokeColor="@color/white"
+                        app:rv_strokeWidth="@dimen/px1"
+                        android:textColor="@color/white"
+                        app:rv_backgroundColor="#C7978F"
+                        app:rv_cornerRadius="@dimen/px10" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/px50"
+                    android:layout_marginRight="@dimen/px50"
+                    android:layout_marginTop="@dimen/px30"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="@dimen/px10"
+                    app:cardElevation="@dimen/px10"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ly_code">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/px26">
+
+                            <TextView
+                                android:id="@+id/tv_num"
+                                style="@style/Tv13black"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                style="@style/Tv12black"
+                                android:layout_marginTop="@dimen/px20"
+                                android:text="@string/me3" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/px25"
+                            android:layout_marginTop="@dimen/px25"
+                            android:background="#ffcccccc" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            android:padding="@dimen/px26">
+
+                            <android.support.v7.widget.AppCompatTextView
+                                android:id="@+id/tv_price"
+                                style="@style/Tv13black"
+                                android:textColor="@color/orange_EF9E11"
+                                android:textSize="20sp" />
+
+                            <TextView
+                                android:id="@+id/tv_price_text"
+                                style="@style/Tv12black"
+                                android:layout_marginTop="@dimen/px20"
+                                android:text="@string/reward_jine" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_achievement"
+                    style="@style/Tv14black"
+                    android:layout_marginTop="@dimen/px50"
+                    android:text="@string/achievement"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_more"
+                    style="@style/Tv12black"
+                    android:layout_marginRight="@dimen/px30"
+
+                    android:text="@string/more"
+                    android:textColor="@color/reb_FC739D"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_achievement"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintLeft_toRightOf="@id/tv_achievement"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cardView"
+                    app:layout_constraintTop_toTopOf="@id/tv_achievement" />
+
+
+                <LinearLayout
+                    android:id="@+id/ly_achievement"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/px30"
+                    android:paddingRight="@dimen/px30"
+                    android:paddingTop="@dimen/px50"
+                    app:layout_constraintTop_toBottomOf="@id/tv_achievement">
+
+                    <com.flyco.roundview.RoundLinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/px30"
+                        android:paddingLeft="@dimen/px20"
+                        android:paddingRight="@dimen/px20"
+                        android:paddingTop="@dimen/px30"
+                        app:rv_strokeColor="@color/black_999999"
+                        app:rv_strokeWidth="@dimen/px1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_month_promotion_number"
+                            style="@style/Tv14gray"
+                            android:layout_gravity="center" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/Tv14gray"
+                            android:layout_marginTop="@dimen/px50"
+                            android:text="@string/promotion_number" />
+
+                    </com.flyco.roundview.RoundLinearLayout>
+
+                    <com.flyco.roundview.RoundLinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/px30"
+                        android:layout_marginRight="@dimen/px30"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/px30"
+                        android:paddingLeft="@dimen/px20"
+                        android:paddingRight="@dimen/px20"
+                        android:paddingTop="@dimen/px30"
+                        app:rv_strokeColor="@color/black_999999"
+                        app:rv_strokeWidth="@dimen/px1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_month_promotion_member_number"
+                            style="@style/Tv14gray"
+                            android:layout_gravity="center" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/Tv14gray"
+                            android:layout_marginTop="@dimen/px50"
+                            android:text="@string/promotion_member_number" />
+
+                    </com.flyco.roundview.RoundLinearLayout>
+
+                    <com.flyco.roundview.RoundLinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/px30"
+                        android:paddingLeft="@dimen/px20"
+                        android:paddingRight="@dimen/px20"
+                        android:paddingTop="@dimen/px30"
+                        app:rv_strokeColor="@color/black_999999"
+                        app:rv_strokeWidth="@dimen/px1">
+
+                        <android.support.v7.widget.AppCompatTextView
+                            android:id="@+id/tv_month_promotion_price"
+                            style="@style/Tv14gray"
+                            android:layout_gravity="center" />
+
+                        <android.support.v7.widget.AppCompatTextView
+                            style="@style/Tv14gray"
+                            android:layout_marginTop="@dimen/px50"
+                            android:text="@string/promotion_member_price2" />
+
+                    </com.flyco.roundview.RoundLinearLayout>
+
+                </LinearLayout>
+
+                <android.support.constraint.Group
+                    android:id="@+id/gp_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="tv_achievement, tv_more, ly_achievement" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_number2"
+                    style="@style/Tv14gray"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginTop="@dimen/px60"
+                    android:text="@string/promotion_number"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ly_achievement" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_number"
+                    style="@style/Tv14gray"
+                    android:layout_marginRight="@dimen/px30"
+                    android:layout_marginTop="@dimen/px60"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ly_achievement" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_member_number2"
+                    style="@style/Tv14gray"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="@string/promotion_member_number"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_number2" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_member_number"
+                    style="@style/Tv14gray"
+                    android:layout_marginRight="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_number" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_member_price2"
+                    style="@style/Tv14gray"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="@string/promotion_member_price"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_member_number2" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_member_price"
+                    style="@style/Tv14gray"
+                    android:layout_marginRight="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    android:textColor="@color/orange_EF9E11"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_member_number" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_get_price2"
+                    style="@style/Tv14gray"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    android:text="@string/get_price"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_member_price2" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_get_price"
+                    style="@style/Tv14gray"
+                    android:layout_marginRight="@dimen/px30"
+                    android:layout_marginTop="@dimen/px20"
+                    android:textColor="@color/orange_EF9E11"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_member_price" />
+
+                <View
+                    android:id="@+id/view"
+                    style="@style/divider_2"
+                    android:layout_marginTop="@dimen/px20"
+                    app:layout_constraintTop_toBottomOf="@id/tv_get_price2" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_promotion_rules"
+                    style="@style/Tv14black"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginTop="@dimen/px40"
+                    android:text="@string/promotion_rules"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/et_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/px30"
+                    android:background="@drawable/dotted_line"
+                    android:gravity="top"
+                    android:maxLines="10"
+                    android:minLines="5"
+                    android:padding="@dimen/px30"
+                    android:textSize="@dimen/size26"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_promotion_rules" />
+
+
+                <View
+                    app:layout_constraintTop_toBottomOf="@id/et_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px50"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="top"
+                android:layout_marginTop="@dimen/px30"
+                android:theme="@style/AppTheme.AppBarLight"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@mipmap/back"
+                app:popupTheme="@style/AppTheme.Popup"
+                app:subtitleTextColor="@color/colorAccent"
+                app:titleTextColor="@color/colorAccent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/extension"
+                    android:textColor="@color/white"
+                    android:textSize="19sp" />
+
+                <FrameLayout
+                    android:id="@+id/top_right_fy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@mipmap/tg_nav_share"
+                        android:textColor="@color/white"
+                        android:textSize="12sp" />
+
+                </FrameLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </FrameLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/iv_img"
+        app:layout_constraintDimensionRatio="H, 375:225"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/place_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:paddingLeft="@dimen/px20"
+        android:paddingRight="@dimen/px20"
+        android:paddingTop="@dimen/px20"
+        android:paddingBottom="@dimen/px30"
+        app:layout_constraintTop_toBottomOf="@id/iv_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:id="@+id/tv_content"
+            style="@style/Tv14black" />
+
+        <android.support.v7.widget.AppCompatTextView
+            android:drawablePadding="@dimen/px5"
+            android:layout_marginLeft="@dimen/px20"
+            android:drawableTop="@mipmap/home_xq_sc_nor"
+            android:id="@+id/tv_collection"
+            android:text="@string/collection"
+            style="@style/Tv12gray" />
+
+        <TextView
+            android:drawablePadding="@dimen/px5"
+            android:layout_marginLeft="@dimen/px30"
+            android:drawableTop="@mipmap/home_xq_loading_nor"
+            android:id="@+id/tv_download"
+            android:text="@string/download"
+            style="@style/Tv12gray" />
+
+        <TextView
+            android:drawablePadding="@dimen/px5"
+            android:layout_marginLeft="@dimen/px30"
+            android:drawableTop="@mipmap/home_xq_share_nor"
+            app:layout_constraintTop_toBottomOf="@id/iv_img"
+            android:id="@+id/tv_share"
+            android:text="@string/share"
+            style="@style/Tv12gray" />
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

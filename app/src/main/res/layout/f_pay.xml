@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:id="@+id/layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.flyco.roundview.RoundLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="@dimen/px100"
+            android:orientation="vertical"
+            app:rv_backgroundColor="@color/white"
+            app:rv_cornerRadius="@dimen/px20">
+
+            <TextView
+                android:id="@+id/tv_pay_type"
+                android:text="请选择支付方式"
+                android:padding="@dimen/px30"
+                android:layout_width="match_parent"
+                style="@style/Tv14black" />
+
+            <ListView
+                android:id="@+id/listView"
+                android:dividerHeight="@dimen/px2"
+                android:divider="@color/white_f4f4f4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.flyco.roundview.RoundTextView
+                app:rv_backgroundColor="@color/reb_FC739D"
+                android:textColor="@color/white"
+                android:padding="@dimen/px15"
+                android:ems="8"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/px30"
+                android:layout_marginBottom="@dimen/px30"
+                android:gravity="center"
+                android:id="@+id/tv_confirm"
+                android:text="取消"
+                style="@style/Tv14black" />
+
+        </com.flyco.roundview.RoundLinearLayout>
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.3"/>
+
+</LinearLayout>

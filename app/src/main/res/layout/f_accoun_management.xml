@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_top"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:padding="@dimen/px30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.yc.gtv.weight.CircleImageView
+                android:src="@mipmap/place_holder_user"
+                android:scaleType="centerCrop"
+                android:layout_height="@dimen/px120"
+                android:layout_width="@dimen/px120"
+                android:id="@+id/iv_head" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/bt_head"
+                android:layout_marginRight="@dimen/px10"
+                app:layout_constraintLeft_toRightOf="@id/iv_head"
+                app:layout_constraintBottom_toBottomOf="@id/iv_head"
+                app:layout_constraintTop_toTopOf="@id/iv_head"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:gravity="right"
+                android:textColor="@color/black_999999"
+                android:text="@string/update_head"
+                style="@style/Tv13gray" />
+
+            <View
+                android:layout_marginTop="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/iv_head"
+                android:id="@+id/view"
+                style="@style/divider_1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_user"
+                android:layout_marginTop="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/view"
+                android:text="@string/user_name"
+                style="@style/Tv13black" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_name"
+                android:layout_marginRight="@dimen/px10"
+                app:layout_constraintTop_toBottomOf="@id/view"
+                app:layout_constraintLeft_toRightOf="@id/tv_user"
+                app:layout_constraintBottom_toBottomOf="@id/tv_user"
+                app:layout_constraintTop_toTopOf="@id/tv_user"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:imeOptions="actionSend"
+                android:singleLine="true"
+                android:gravity="right"
+                android:textColor="@color/black_999999"
+                android:hint="@string/not_set"
+                style="@style/Tv13gray" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_marginTop="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/tv_user"
+                style="@style/divider_1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_phone"
+                android:layout_marginTop="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/view2"
+                android:text="@string/phone_number"
+                style="@style/Tv13black" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_phone_num"
+                android:layout_marginRight="@dimen/px10"
+                app:layout_constraintTop_toBottomOf="@id/view2"
+                app:layout_constraintLeft_toRightOf="@id/tv_phone"
+                app:layout_constraintBottom_toBottomOf="@id/tv_phone"
+                app:layout_constraintTop_toTopOf="@id/tv_phone"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:gravity="right"
+                android:textColor="@color/black_999999"
+                android:hint="@string/not_set"
+                style="@style/Tv13gray" />
+
+            <View
+                android:id="@+id/view3"
+                android:layout_marginTop="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/tv_phone"
+                style="@style/divider_1"/>
+
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/tv_pwd"
+                android:background="?selectableItemBackground"
+                android:layout_width="match_parent"
+                android:paddingTop="@dimen/px30"
+                android:paddingBottom="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@id/view3"
+                android:text="@string/update_pwd"
+                style="@style/Tv13black" />
+
+            <View
+                app:layout_constraintTop_toBottomOf="@id/tv_pwd"
+                style="@style/divider_1"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_top" />
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:fillViewport="true"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/px50"
+                    android:paddingTop="@dimen/px20">
+
+                    <ListView
+                        android:id="@+id/lv_left"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="@dimen/px30"
+                        android:layout_weight="0.4"
+                        android:divider="@null"
+                        android:scrollbars="none" />
+
+                    <FrameLayout
+                        android:id="@+id/fl_container"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/px20"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <View style="@style/divider_2" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    style="@style/Tv14black"
+                    android:layout_margin="@dimen/px30"
+                    android:text="@string/choice_channel" />
+
+                <com.example.library.AutoFlowLayout
+                    android:id="@+id/rv_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/px30"
+                    android:layout_marginLeft="@dimen/px30"
+                    android:layout_marginRight="@dimen/px30" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</layout>

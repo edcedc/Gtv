@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.yc.gtv.weight.LoadDataLayout
+        android:id="@+id/swipeLoadDataLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/px20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/white_f4f4f4">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
+
+            </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/ly_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_total_selection"
+                    style="@style/Tv14black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:padding="@dimen/px40"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:text="@string/total_selection"/>
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_del"
+                    style="@style/Tv14black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:padding="@dimen/px40"
+                    android:background="@color/reb_FC739D"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="@string/del"/>
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+
+    </com.yc.gtv.weight.LoadDataLayout>
+
+</layout>

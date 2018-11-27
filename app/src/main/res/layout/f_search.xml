@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include layout="@layout/include_search"/>
+
+        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:padding="@dimen/px30"
+                android:layout_height="match_parent">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/tv_historical_records"
+                    style="@style/Tv14black"
+                    android:text="@string/historical_records" />
+
+                    <FrameLayout
+                        android:id="@+id/fy_del"
+                        android:paddingLeft="@dimen/px50"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:layout_gravity="center"
+                            android:background="@mipmap/search_delay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </FrameLayout>
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_marginTop="@dimen/px30"
+                    app:layout_constraintTop_toBottomOf="@id/tv_historical_records"
+                    style="@style/divider_1"/>
+
+                <com.example.library.AutoFlowLayout
+                    app:layout_constraintTop_toBottomOf="@id/view"
+                    android:id="@+id/rv_historical_records"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px30" />
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:layout_marginTop="@dimen/px60"
+                    app:layout_constraintTop_toBottomOf="@id/rv_historical_records"
+                    android:id="@+id/tv_hot_search"
+                    style="@style/Tv14black"
+                    android:text="@string/hot_search" />
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_marginTop="@dimen/px30"
+                    app:layout_constraintTop_toBottomOf="@id/tv_hot_search"
+                    style="@style/divider_1"/>
+
+                <com.example.library.AutoFlowLayout
+                    app:layout_constraintTop_toBottomOf="@id/view1"
+                    android:id="@+id/rv_hot_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/px30" />
+
+                <android.support.constraint.Group
+                    android:id="@+id/gp_list"
+                    app:constraint_referenced_ids="tv_hot_search, view1, rv_hot_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/rv_historical_records"
+                    android:layout_marginTop="@dimen/px60"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+    </LinearLayout>
+
+
+</layout>

@@ -1,7 +1,9 @@
 package com.yc.gtv.view;
 
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,25 +19,44 @@ import com.shuyu.gsyvideoplayer.listener.GSYVideoProgressListener;
 import com.shuyu.gsyvideoplayer.listener.LockClickListener;
 import com.shuyu.gsyvideoplayer.utils.OrientationUtils;
 import com.shuyu.gsyvideoplayer.video.base.GSYVideoPlayer;
+import com.umeng.socialize.ShareAction;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.VideoDescListAdapter;
+import com.yc.gtv.base.BaseActivity;
 import com.yc.gtv.base.BaseFragment;
+import com.yc.gtv.base.User;
 import com.yc.gtv.bean.DataBean;
+import com.yc.gtv.bean.SwitchVideoModel;
 import com.yc.gtv.databinding.FVideoDescBinding;
+import com.yc.gtv.event.LoginInEvent;
 import com.yc.gtv.presenter.VideoDescPresenter;
 import com.yc.gtv.utils.GlideLoadingUtils;
 import com.yc.gtv.utils.PopupWindowTool;
+import com.yc.gtv.utils.ShareTool;
 import com.yc.gtv.view.impl.VideoDescContract;
+import com.yc.gtv.weight.CountDownTimer;
+import com.yc.gtv.weight.SwitchVideoTypeDialog;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by edison on 2018/11/18.
- *  影片详情
+ * 影片详情
  */
 
-public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBinding> implements VideoDescContract.View, View.OnClickListener{
+public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBinding> implements VideoDescContract.View, View.OnClickListener {
+
+    private String id;
+    private TextView tvResolvingPower;
+    private int[] claritys;
+    private GSYVideoOptionBuilder gsyVideoOption;
+    private ShareAction shareAction;
+    private int residualViewCount;
 
     public static VideoDescFrg newInstance() {
         Bundle args = new Bundle();
@@ -50,6 +71,9 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
     private OrientationUtils orientationUtils;
     private boolean isPlay;
     private boolean isPause;
+    private boolean isCollection;
+    private String videoUrl;
+    private boolean isOnePlay = true;//只记录一次播放
 
     @Override
     public void initPresenter() {
@@ -58,7 +82,7 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
 
     @Override
     protected void initParms(Bundle bundle) {
-
+        id = bundle.getString("id");
     }
 
     @Override
@@ -66,58 +90,56 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
         return R.layout.f_video_desc;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.video_play));
+        shareAction = ShareTool.getInstance().shareAction(act, "https://www.baidu.com/");
         mB.tvCollection.setOnClickListener(this);
         mB.tvShare.setOnClickListener(this);
         mB.tvDownload.setOnClickListener(this);
-        if (adapter == null){
+        tvResolvingPower = mB.videoPlayer.findViewById(R.id.tv_resolving_power);
+        tvResolvingPower.setOnClickListener(this);
+        tvResolvingPower.setText("480P");
+        if (adapter == null) {
             adapter = new VideoDescListAdapter(act, listBean);
         }
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.setEnableRefresh(false);
+        showLoadDataing();
+        mB.refreshLayout.startRefresh();
         mB.refreshLayout.setEnableLoadmore(false);
-        mPresenter.onLabel();
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onLabel();
+                mPresenter.onVideoDeatil(id);
             }
         });
         setSwipeBackEnable(false);
         mB.rvLabel.setMultiChecked(true);
-
-
-        mB.tvTitle.setText("影片标题标题标题标题标题");
-        mB.tvTime.setText("2018-09-07");
-        mB.tvContent.setText("影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简介影片简");
-
-
         //外部辅助的旋转，帮助全屏
         orientationUtils = new OrientationUtils(act, mB.videoPlayer);
         //初始化不打开外部的旋转
         orientationUtils.setEnable(false);
-        videoPlay();
     }
 
-    private void videoPlay(){
+    private void setVideoPlay(String imgUrl, String videoUrl) {
+        this.videoUrl = videoUrl;
         //增加封面
         ImageView imageView = new ImageView(act);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        GlideLoadingUtils.load(act, "http://ww3.sinaimg.cn/large/0073tLPGgy1fxek3b6seej30sg0sg42r.jpg", imageView);
-        GSYVideoOptionBuilder gsyVideoOption = new GSYVideoOptionBuilder();
+        GlideLoadingUtils.load(act, imgUrl, imageView);
+        gsyVideoOption = new GSYVideoOptionBuilder();
         gsyVideoOption.setThumbImageView(imageView)
-                .setLooping(true)
+                .setLooping(false)
                 .setIsTouchWiget(true)
                 .setRotateViewAuto(false)
                 .setLockLand(false)
                 .setAutoFullWithSize(true)
                 .setShowFullAnimation(false)
                 .setNeedLockFull(true)
-                .setUrl("http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4")
-                .setCacheWithPlay(false)
+                .setUrl(videoUrl)
+                .setCacheWithPlay(true)
                 .setVideoAllCallBack(new GSYSampleCallBack() {
                     @Override
                     public void onPrepared(String url, Object... objects) {
@@ -126,7 +148,17 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
                         //开始播放了才能旋转和全屏
                         orientationUtils.setEnable(true);
                         isPlay = true;
-
+                        EventBus.getDefault().post(new LoginInEvent());
+                        JSONObject userInfo = User.getInstance().getUserInfo();
+                        if (isOnePlay){
+                            isOnePlay = false;
+                            mPresenter.onVideoRecordViewTimes();
+                        }
+                        if (userInfo != null && !userInfo.optBoolean("vip") && residualViewCount <= 0){
+                            downTimer.start();
+                        }else if (userInfo == null && residualViewCount <= 0){
+                            downTimer.start();
+                        }
                     }
 
                     @Override
@@ -139,6 +171,7 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
                     public void onAutoComplete(String url, Object... objects) {
                         super.onAutoComplete(url, objects);
                         LogUtils.e("onAutoComplete", url);
+
                     }
 
                     @Override
@@ -172,7 +205,6 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
                     }
                 })
                 .build(mB.videoPlayer);
-
         mB.videoPlayer.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,66 +216,74 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
         });
     }
 
-    @Override
-    public void setLabel(final List<DataBean> list) {
-        mB.rvLabel.removeAllViews();
-        mB.rvLabel.setAdapter(new FlowAdapter(list) {
-            @Override
-            public View getView(final int i) {
-                View view = View.inflate(act, R.layout.i_video_label, null);
-                TextView tvText = view.findViewById(R.id.tv_text);
-                DataBean bean = list.get(i);
-                tvText.setText("标签" + i);
+    private void setCollection(boolean isCollection) {
+        if (isCollection) {
+            mB.tvCollection.setCompoundDrawablesWithIntrinsicBounds(null,
+                    act.getResources().getDrawable(R.mipmap.home_xq_sc_nor, null), null, null);
+            mB.tvCollection.setText("已收藏");
 
-                return view;
-            }
-        });
-
-
-        if (pagerNumber == 1) {
-            listBean.clear();
-            mB.refreshLayout.finishRefreshing();
         } else {
-            mB.refreshLayout.finishLoadmore();
+            mB.tvCollection.setCompoundDrawablesWithIntrinsicBounds(null,
+                    act.getResources().getDrawable(R.mipmap.home_xq_sc_nor, null), null, null);
+            mB.tvCollection.setText("收藏");
         }
-        listBean.addAll(list);
-        adapter.notifyDataSetChanged();
+//        this.isCollection = !isCollection;
     }
 
-    private boolean isCollection = true;
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        if (!((BaseActivity)act).isLogin())return;
+        switch (view.getId()) {
             case R.id.tv_collection:
-                if (isCollection){
-                    mB.tvCollection.setCompoundDrawablesWithIntrinsicBounds(null,
-                            act.getResources().getDrawable(R.mipmap.home_xq_sc_nor, null), null, null);
-                    mB.tvCollection.setText("已收藏");
-
-                }else {
-                    mB.tvCollection.setCompoundDrawablesWithIntrinsicBounds(null,
-                            act.getResources().getDrawable(R.mipmap.home_xq_sc_nor, null), null, null);
-                    mB.tvCollection.setText("收藏");
-                }
-                isCollection = !isCollection;
+                mPresenter.onCommonCollect(id, isCollection);
                 break;
             case R.id.tv_download:
-                PopupWindowTool.showDialog(act, PopupWindowTool.notMember, new PopupWindowTool.DialogListener() {
-                    @Override
-                    public void onClick() {
-
-                    }
-                });
+                if (!((BaseActivity)act).isMember())return;
+                mPresenter.onVideoDownload(videoUrl, mB.tvTitle.getText().toString());
                 break;
             case R.id.tv_share:
-                PopupWindowTool.showDialog(act, PopupWindowTool.notLogin, new PopupWindowTool.DialogListener() {
-                    @Override
-                    public void onClick() {
-
-                    }
-                });
+                shareAction.open();
+                break;
+            case R.id.tv_resolving_power://选择分辨率
+                showSwitchDialog();
                 break;
         }
+    }
+
+    /**
+     * 弹出切换清晰度
+     */
+    private int mSourcePosition = 1;
+    private void showSwitchDialog() {
+        if (claritys.length == 0)return;
+        final List<SwitchVideoModel> list = new ArrayList<>();
+        for (int i : claritys){
+            SwitchVideoModel bean = new SwitchVideoModel();
+            bean.setNum(i);
+            if (i == 1){
+                bean.setName("480P");
+            }else if (i == 2){
+                bean.setName("720P");
+            }else {
+                bean.setName("1080P");
+            }
+            list.add(bean);
+        }
+        SwitchVideoTypeDialog switchVideoTypeDialog = new SwitchVideoTypeDialog(getContext());
+        switchVideoTypeDialog.initList(list, new SwitchVideoTypeDialog.OnListItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                LogUtils.e(position);
+                final String name = list.get(position).getName();
+                position += 1;
+                if (mSourcePosition != position) {
+                    mPresenter.onVideoDownloadUrl(id, position);
+                } else {
+                    showToast("已经是 " + name);
+                }
+            }
+        });
+        switchVideoTypeDialog.show();
     }
 
     @Override
@@ -277,9 +317,15 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
         if (isPlay) {
             getCurPlay().release();
         }
+        ShareTool.getInstance().release(act);
         //GSYPreViewManager.instance().releaseMediaPlayer();
-        if (orientationUtils != null)
+        if (orientationUtils != null){
             orientationUtils.releaseListener();
+        }
+        if (downTimer != null){
+            downTimer.cancel();
+            downTimer = null;
+        }
     }
 
     @Override
@@ -289,13 +335,101 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
         if (isPlay && !isPause) {
             mB.videoPlayer.onConfigurationChanged(act, newConfig, orientationUtils, true, true);
         }
+        shareAction.close();
     }
 
     private GSYVideoPlayer getCurPlay() {
         if (mB.videoPlayer.getFullWindowPlayer() != null) {
-            return  mB.videoPlayer.getFullWindowPlayer();
+            return mB.videoPlayer.getFullWindowPlayer();
         }
         return mB.videoPlayer;
     }
+
+    @Override
+    public void hideLoading() {
+        super.hideLoading();
+        super.setRefreshLayout(pagerNumber, mB.refreshLayout);
+    }
+
+    @Override
+    public void setData(DataBean data) {
+        setVideoPlay(data.getCover(), data.getPlayUrl());
+        residualViewCount = data.getResidualViewCount();
+        mB.tvTitle.setText(data.getTitle());
+        String[] split = data.getCreateTime().split(" ");
+        mB.tvTime.setText(split[0]);
+        mB.tvContent.setText(data.getContext());
+        mB.rvLabel.setVisibility(View.GONE);
+        claritys = data.getClaritys();
+        final List<DataBean> tags = data.getTags();
+        if (tags != null && tags.size() != 0) {
+            Random random=new Random();
+            int r = random.nextInt(tags.size()); //获得随机下标
+            mPresenter.onHomeGuessLike(tags.get(r).getTagId());
+
+            mB.rvLabel.setVisibility(View.VISIBLE);
+            mB.rvLabel.removeAllViews();
+            mB.rvLabel.setAdapter(new FlowAdapter(tags) {
+                @Override
+                public View getView(final int i) {
+                    View view = View.inflate(act, R.layout.i_video_label, null);
+                    TextView tvText = view.findViewById(R.id.tv_text);
+                    DataBean bean = tags.get(i);
+                    tvText.setText(bean.getTagName());
+                    return view;
+                }
+            });
+        } else {
+            mB.tvLabel.setVisibility(View.GONE);
+            mB.rvLabel.setVisibility(View.INVISIBLE);
+        }
+        isCollection = data.isCollected();
+        setCollection(isCollection);
+    }
+
+    @Override
+    public void onCollectionSuccess(boolean isCollection) {
+        setCollection(isCollection);
+    }
+
+    @Override
+    public void onHomeGuessLike(List<DataBean> data) {
+        listBean.clear();
+        mB.refreshLayout.finishRefreshing();
+        listBean.addAll(data);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void setDownloadUrl(String data, int position) {
+//        setVideoPlay(null, data);
+        mSourcePosition = position;
+        if (position == 1){
+            tvResolvingPower.setText("480P");
+        }else if (position == 2){
+            tvResolvingPower.setText("720P");
+        }else {
+            tvResolvingPower.setText("1080P");
+        }
+        setVideoPlay(null, data);
+        mB.videoPlayer.startPlayLogic();
+    }
+
+    private CountDownTimer downTimer = new CountDownTimer(300000, 1000) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+        }
+
+        @Override
+        public void onFinish() {
+            mB.videoPlayer.onVideoPause();
+            PopupWindowTool.showDialog(act, PopupWindowTool.onTrial, new PopupWindowTool.DialogListener() {
+                @Override
+                public void onClick() {
+                    act.finish();
+                }
+            });
+        }
+    } ;
 
 }

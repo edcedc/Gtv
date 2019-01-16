@@ -13,6 +13,8 @@ import com.yc.gtv.view.VideoDescFrg;
 
 public class VideoDescAct extends BaseActivity {
 
+    private String id;
+
     @Override
     public void initPresenter() {
 
@@ -25,17 +27,19 @@ public class VideoDescAct extends BaseActivity {
 
     @Override
     protected void initParms(Bundle bundle) {
-
+        id = bundle.getString("id");
     }
 
     @Override
     protected void initView() {
         setSofia(true);
         if (findFragment(VideoDescFrg.class) == null) {
-            loadRootFragment(R.id.fl_container, VideoDescFrg.newInstance());
+            VideoDescFrg frg = VideoDescFrg.newInstance();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", id);
+            frg.setArguments(bundle);
+            loadRootFragment(R.id.fl_container, frg);
         }
     }
-
-
 
 }

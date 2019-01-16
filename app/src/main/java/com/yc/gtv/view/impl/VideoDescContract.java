@@ -14,12 +14,28 @@ public interface VideoDescContract {
 
     interface View extends IBaseView {
 
-        void setLabel(List<DataBean> list);
+        void setData(DataBean data);
+
+        void onCollectionSuccess(boolean isCollection);
+
+        void onHomeGuessLike(List<DataBean> data);
+
+        void setDownloadUrl(String data, int position);
     }
 
     abstract class Presenter extends BasePresenter<View> {
 
-        public abstract void onLabel();
+        public abstract void onVideoDeatil(String id);
+
+        public abstract void onCommonCollect(String id, boolean isCollection);
+
+        public abstract void onHomeGuessLike(String id);
+
+        public abstract void onVideoDownloadUrl(String id, int position);
+
+        public abstract void onVideoDownload(String videoUrl, String name);
+
+        public abstract void onVideoRecordViewTimes();
     }
 
 }

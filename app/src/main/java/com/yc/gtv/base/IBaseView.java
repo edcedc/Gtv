@@ -14,6 +14,7 @@ public interface IBaseView extends MvpView{
 
     void hideLoading();
 
+    void onError(Throwable e, String errorName);
     void onError(Throwable e);
 
     void addDisposable(Disposable d);

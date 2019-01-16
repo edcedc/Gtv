@@ -3,7 +3,10 @@ package com.yc.gtv.base;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Color;
@@ -25,10 +28,16 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.umeng.socialize.UMShareAPI;
 import com.yanzhenjie.sofia.Sofia;
 import com.yc.gtv.R;
+import com.yc.gtv.controller.UIHelper;
+import com.yc.gtv.utils.PopupWindowTool;
 import com.yc.gtv.utils.TUtil;
+
+import org.json.JSONObject;
 
 import me.yokeyword.fragmentation.SupportActivity;
 
@@ -43,6 +52,18 @@ public abstract class BaseActivity<P extends BasePresenter, VB extends ViewDataB
     protected Activity act;
     protected VB mB;
     public P mPresenter;
+
+    /**
+     * 重写getResources()方法，让APP的字体不受系统设置字体大小影响
+     */
+    @Override
+    public Resources getResources() {
+        Resources res = super.getResources();
+        Configuration config = new Configuration();
+        config.setToDefaults();
+        res.updateConfiguration(config, res.getDisplayMetrics());
+        return res;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,20 +131,21 @@ public abstract class BaseActivity<P extends BasePresenter, VB extends ViewDataB
 
     protected abstract void initView();
 
-    protected void setCenterTitle(String title){
-        title(title, 0, null, -1);
+    protected void setTitle(String title) {
+        title(title, null, -1, true);
     }
-    protected void setTitle(String title){
-        title(title, 1, null, -1);
+    protected void setTitle(String title, String right) {
+        title(title,  right, -1, true);
     }
-    protected void setTitle(String title, String right){
-        title(title, 2, right, -1);
+    protected void setTitle(String title, boolean isBack) {
+        title(title,  null, -1, isBack);
     }
-    protected void setTitle(String title, int rightImg){
-        title(title, 1, null, rightImg);
+    protected void setTitle(String title, String right, boolean isBack) {
+        title(title, right, -1, isBack);
     }
 
-    private void title(String title, int type, String rightText, int img) {
+    private void title(String title, String rightText, int img, boolean isBack) {
+        setSofia(false);
         final AppCompatActivity mAppCompatActivity = (AppCompatActivity) act;
         Toolbar toolbar = findViewById(R.id.toolbar);
         TextView topTitle = findViewById(R.id.top_title);
@@ -131,42 +153,34 @@ public abstract class BaseActivity<P extends BasePresenter, VB extends ViewDataB
         FrameLayout topRightFy = findViewById(R.id.top_right_fy);
         //需要调用该函数才能设置toolbar的信息
         mAppCompatActivity.setSupportActionBar(toolbar);
-        switch (type){
-            case 0:
-                mAppCompatActivity.getSupportActionBar().setTitle("");
-                topTitle.setVisibility(View.VISIBLE);
-                topTitle.setText(title);
-                toolbar.setNavigationIcon(null);
-                break;
-            case 1:
-                topTitle.setVisibility(View.GONE);
-                mAppCompatActivity.getSupportActionBar().setTitle(title);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
-                break;
-            case 2:
-                topTitle.setVisibility(View.GONE);
-                mAppCompatActivity.getSupportActionBar().setTitle(title);
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        finish();
-                    }
-                });
-                topRight.setText(rightText);
-                topRightFy.setVisibility(View.VISIBLE);
-                topRightFy.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        setOnRightClickListener();
-                    }
-                });
-                break;
+        mAppCompatActivity.getSupportActionBar().setTitle("");
+        if (isBack){
+            toolbar.setNavigationIcon(R.mipmap.back);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    act.onBackPressed();
+                }
+            });
+        }else {
+            toolbar.setNavigationIcon(null);
         }
+        topTitle.setText(title);
+        if (!StringUtils.isEmpty(rightText)){
+            topRightFy.setVisibility(View.VISIBLE);
+            topRight.setText(rightText);
+        }else if (img != -1){
+            topRightFy.setVisibility(View.VISIBLE);
+            topRight.setBackgroundResource(img);
+        }else {
+
+        }
+        topRightFy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setOnRightClickListener();
+            }
+        });
     }
 
     protected void setOnRightClickListener() {
@@ -287,6 +301,41 @@ public abstract class BaseActivity<P extends BasePresenter, VB extends ViewDataB
             }
         }
         return false;
+    }
+
+    // true  false未登录
+    public boolean isLogin(){
+        if (!User.getInstance().isLogin()){
+            PopupWindowTool.showDialog(act, PopupWindowTool.notLogin, new PopupWindowTool.DialogListener() {
+                @Override
+                public void onClick() {
+                    UIHelper.startLoginAct();
+                }
+            });
+            return false;
+        }
+        return User.getInstance().isLogin();
+    }
+
+    //是否会员
+    public boolean isMember(){
+        JSONObject userInfo = User.getInstance().getUserInfo();
+        if (!userInfo.optBoolean("vip")){
+            PopupWindowTool.showDialog(act, PopupWindowTool.notMember, new PopupWindowTool.DialogListener() {
+                @Override
+                public void onClick() {
+
+                }
+            });
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
     }
 
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/px30"
@@ -8,14 +9,15 @@
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_name"
+        android:id="@+id/tv_noVipStat1"
+        android:text="@string/promotion_number2"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="@dimen/px20"
         android:textColor="@color/black_666666"
         style="@style/Tv14black" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_num"
+        android:id="@+id/tv_noVipStat"
         android:layout_marginRight="@dimen/px20"
         app:layout_constraintRight_toRightOf="parent"
         android:textColor="@color/black_666666"
@@ -24,7 +26,58 @@
     <View
         android:id="@+id/view"
         android:layout_marginTop="@dimen/px20"
-        app:layout_constraintTop_toBottomOf="@id/tv_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_noVipStat"
         style="@style/divider_1"/>
+
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_vipStat1"
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        android:layout_marginTop="@dimen/px20"
+        android:text="@string/promotion_member_number2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/px20"
+        android:textColor="@color/black_666666"
+        style="@style/Tv14black" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_vipStat"
+        android:layout_marginTop="@dimen/px20"
+        app:layout_constraintTop_toBottomOf="@id/view"
+        android:layout_marginRight="@dimen/px20"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/black_666666"
+        style="@style/Tv14black" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_marginTop="@dimen/px20"
+        app:layout_constraintTop_toBottomOf="@id/tv_vipStat1"
+        style="@style/divider_1"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_price1"
+        app:layout_constraintTop_toBottomOf="@+id/view1"
+        android:layout_marginTop="@dimen/px20"
+        android:text="@string/promotion_member_price3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/px20"
+        android:textColor="@color/black_666666"
+        style="@style/Tv14black" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tv_price"
+        android:layout_marginTop="@dimen/px20"
+        app:layout_constraintTop_toBottomOf="@id/view1"
+        android:layout_marginRight="@dimen/px20"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="@color/black_666666"
+        style="@style/Tv14black" />
+
+    <View
+        style="@style/divider_1"
+        android:layout_marginTop="@dimen/px20"
+        app:layout_constraintTop_toBottomOf="@id/tv_price"  />
+
 
 </android.support.constraint.ConstraintLayout>

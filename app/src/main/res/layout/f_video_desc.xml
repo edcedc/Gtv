@@ -65,7 +65,6 @@
                                 android:layout_marginTop="@dimen/px40"
                                 android:text="@string/label"
                                 app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toLeftOf="@id/rv_label"
                                 app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
                             <com.example.library.AutoFlowLayout
@@ -81,6 +80,7 @@
                                 android:id="@+id/fY_content"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                app:layout_goneMarginTop="@dimen/px100"
                                 android:layout_marginTop="@dimen/px40"
                                 android:background="@drawable/dotted_line"
                                 android:padding="@dimen/px30"

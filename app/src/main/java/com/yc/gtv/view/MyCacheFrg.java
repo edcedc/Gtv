@@ -55,8 +55,8 @@ public class MyCacheFrg extends BaseFragment<BasePresenter, FHistoricalBinding>{
     protected void initView(View view) {
         setTitle(getString(R.string.my_cache), getString(R.string.edit));
         topRight = view.findViewById(R.id.top_right);
-        mFragments.add(new MyCacheChildFrg(Constants.HISTORICAL_CHILD_VIDEO));
-        mFragments.add(new MyCacheChildFrg(Constants.HISTORICAL_CHILD_IMG));
+        mFragments.add(new MyCacheChildFrg(Constants.CACHE_VIDEO));
+        mFragments.add(new MyCacheChildFrg(Constants.CACHE_IMG));
 
         for (int i = 0; i < strings.length; i++) {
             mTabEntities.add(new TabEntity(strings[i], 0, 0));
@@ -100,7 +100,7 @@ public class MyCacheFrg extends BaseFragment<BasePresenter, FHistoricalBinding>{
     @Subscribe
     public void onMainThreadInEvent(HistoricalColseInEvent event){
         if (!event.isClose){
-            setTitle(getString(R.string.historical_sightseeing), getString(R.string.edit));
+            setTitle(getString(R.string.my_cache), getString(R.string.edit));
             EventBus.getDefault().post(new HistoricalEditInEvent(false));
         }
     }
@@ -116,10 +116,10 @@ public class MyCacheFrg extends BaseFragment<BasePresenter, FHistoricalBinding>{
         super.setOnRightClickListener();
         String s = topRight.getText().toString();
         if (s.equals(getString(R.string.edit))){
-            setTitle(getString(R.string.historical_sightseeing), getString(R.string.cancel));
+            setTitle(getString(R.string.my_cache), getString(R.string.cancel));
             EventBus.getDefault().post(new HistoricalEditInEvent(true));
         }else {
-            setTitle(getString(R.string.historical_sightseeing), getString(R.string.edit));
+            setTitle(getString(R.string.my_cache), getString(R.string.edit));
             EventBus.getDefault().post(new HistoricalEditInEvent(false));
         }
     }

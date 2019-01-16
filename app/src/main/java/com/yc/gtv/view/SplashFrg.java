@@ -9,10 +9,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.yanzhenjie.permission.Action;
@@ -20,19 +20,29 @@ import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
 import com.yanzhenjie.permission.Setting;
 import com.yc.gtv.R;
+import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BasePresenter;
+import com.yc.gtv.base.User;
+import com.yc.gtv.callback.Code;
+import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FSplashBinding;
-import com.yc.gtv.utils.cache.ShareIsLoginCache;
+import com.yc.gtv.event.LoginInEvent;
 import com.yc.gtv.utils.cache.ShareSessionIdCache;
+import com.yc.gtv.utils.cache.SharedAccount;
+import com.yc.gtv.weight.RuntimeRationale;
+
+import org.greenrobot.eventbus.EventBus;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
-
-import com.yc.gtv.base.BaseFragment;
-import com.yc.gtv.weight.RuntimeRationale;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * 作者：yc on 2018/6/15.
@@ -171,7 +181,7 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
      */
     public void showSettingDialog(Context context, final List<String> permissions) {
         List<String> permissionNames = Permission.transformText(context, permissions);
-        String message = context.getString(R.string.message_permission_always_failed, TextUtils.join("\n", permissionNames));
+        String message = getString(R.string.message_permission_always_failed, TextUtils.join("\n", permissionNames));
 
         new AlertDialog.Builder(context)
                 .setCancelable(false)
@@ -221,12 +231,51 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
      * 权限都成功
      */
     private void setPermissionOk() {
-        String sessionId = ShareSessionIdCache.getInstance(act).getSessionId();
-        if (!StringUtils.isEmpty(sessionId)) {
+        SharedAccount account = SharedAccount.getInstance(act);
+        String mobile = account.getMobile();
+        String pwd = account.getPwd();
+        if (!StringUtils.isEmpty(mobile) && !StringUtils.isEmpty(pwd)){
+            CloudApi.authLogin(mobile, pwd)
+                    .doOnSubscribe(new Consumer<Disposable>() {
+                        @Override
+                        public void accept(Disposable disposable) throws Exception {
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<JSONObject>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                        }
 
-        } else {
+                        @Override
+                        public void onNext(JSONObject jsonObject) {
+                            if (jsonObject.optInt("code") == Code.CODE_SUCCESS){
+                                JSONObject data = jsonObject.optJSONObject("data");
+                                User.getInstance().setUserObj(data);
+                                User.getInstance().setLogin(true);
+                                EventBus.getDefault().post(new LoginInEvent());
+                                ShareSessionIdCache.getInstance(act).save(data.optString("userId") + "_" + data.optString("token"));
+                            }else {
+                                ShareSessionIdCache.getInstance(act).remove();
+                            }
+                            startNext();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            ShareSessionIdCache.getInstance(act).remove();
+                            startNext();
+                        }
+
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }else {
             startNext();
         }
+        String sessionId = ShareSessionIdCache.getInstance(act).getSessionId();
+
        /* if (ShareIsLoginCache.getInstance(act).getIsLogin()) {
 //            ShareSessionIdCache.getInstance(act).save("08f0d4bf806e4a6883d8f0ab935367dd");
 

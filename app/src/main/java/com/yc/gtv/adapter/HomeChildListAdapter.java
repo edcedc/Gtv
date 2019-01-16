@@ -29,14 +29,14 @@ public class HomeChildListAdapter extends BaseRecyclerviewAdapter<DataBean>{
     @Override
     protected void onBindViewHolde(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        DataBean bean = listBean.get(position);
-        GlideLoadingUtils.load(act, "http://ww3.sinaimg.cn/large/0073tLPGgy1fx9o3gj1z7j30hs0hstat.jpg", viewHolder.ivImg);
-        viewHolder.tvText.setText("视频标题最多显示一行一行一行一行一行一行一行");
+        final DataBean bean = listBean.get(position);
+        GlideLoadingUtils.load(act, bean.getCover(), viewHolder.ivImg);
+        viewHolder.tvText.setText(bean.getTitle());
 
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIHelper.startVideoDescAct();
+                UIHelper.startVideoDescAct(bean.getId());
             }
         });
     }

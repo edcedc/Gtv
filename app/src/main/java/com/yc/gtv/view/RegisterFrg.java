@@ -11,6 +11,7 @@ import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FRegisterBinding;
 import com.yc.gtv.presenter.RegisterPresenter;
+import com.yc.gtv.utils.CountDownTimerUtils;
 import com.yc.gtv.view.impl.RegisterContract;
 
 /**
@@ -59,9 +60,9 @@ public class RegisterFrg extends BaseFragment<RegisterPresenter, FRegisterBindin
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 int passwordLength = mB.etPwd1.getText().length();
                 if (b){
-                    mB.ivPwd1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    mB.etPwd1.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }else {
-                    mB.ivPwd1.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    mB.etPwd1.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 mB.etPwd1.setSelection(passwordLength);
             }
@@ -82,8 +83,13 @@ public class RegisterFrg extends BaseFragment<RegisterPresenter, FRegisterBindin
                 , mB.etPwd1.getText().toString(), mB.etInvitationCode.getText().toString(), mB.cbSubmit.isChecked());
                 break;
             case R.id.tv_agreement:
-                UIHelper.startHtmlAct();
+                UIHelper.startHtmlAct(2);
                 break;
         }
+    }
+
+    @Override
+    public void onCodeSuccess() {
+        new CountDownTimerUtils(act, 60000, 1000, mB.btCode).start();
     }
 }

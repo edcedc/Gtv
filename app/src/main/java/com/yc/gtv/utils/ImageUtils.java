@@ -51,7 +51,7 @@ public class ImageUtils {
     }
 
 
-    public static String viewSaveToImage(Activity act, View view, String child) {
+    public static boolean viewSaveToImage(Activity act, View view, String child) {
         /**
          * View组件显示的内容可以通过cache机制保存为bitmap
          * 我们要获取它的cache先要通过setDrawingCacheEnable方法把cache开启，
@@ -67,7 +67,7 @@ public class ImageUtils {
 
         // 把一个View转换成图片
         Bitmap cachebmp = loadBitmapFromView(view);
-        FileSaveUtils.save(act, cachebmp);
+        boolean save = FileSaveUtils.save(act, cachebmp, System.currentTimeMillis() + "");
 
 //        aaa.setImageBitmap(cachebmp);//直接展示转化的bitmap
 
@@ -98,7 +98,7 @@ public class ImageUtils {
         }*/
 
         view.destroyDrawingCache();
-        return sharePic(cachebmp,child);
+        return save;
     }
 
     private static Bitmap loadBitmapFromView(View v) {

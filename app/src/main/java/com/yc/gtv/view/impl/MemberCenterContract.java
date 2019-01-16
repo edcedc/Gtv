@@ -11,6 +11,7 @@ public interface MemberCenterContract {
 
     interface View extends IBaseView {
 
+        void setData(String remark);
     }
 
     abstract class Presenter extends BasePresenter<View> {

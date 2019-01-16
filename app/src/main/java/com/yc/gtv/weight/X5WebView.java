@@ -74,7 +74,10 @@ public class X5WebView extends WebView {
 //            webSetting.setTextSize(WebSettings.TextSize.LARGEST);
 //        }
         webSetting.setTextZoom(100);
+
         setLayerType(View.LAYER_TYPE_NONE,null);//开启硬件加速
+        setHorizontalScrollBarEnabled(false);//水平不显示
+        setVerticalScrollBarEnabled(false); //垂直不显示
 
 //        webSetting.setTextSize(WebSettings.TextSize.LARGEST);
     }

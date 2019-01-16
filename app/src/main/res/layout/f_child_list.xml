@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <com.yc.gtv.weight.LoadDataLayout
         android:id="@+id/swipeLoadDataLayout"
@@ -24,10 +25,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/i_video_desc_list"
                     android:overScrollMode="never" />
 
             </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
-
 
             <LinearLayout
                 android:visibility="gone"
@@ -59,8 +60,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-
 
     </com.yc.gtv.weight.LoadDataLayout>
 

@@ -17,6 +17,7 @@
     <color name="reb_FC739D">#FC739D</color>
     <color name="reb_dabcc5">#dabcc5</color>
     <color name="reb_CC5B7E">#CC5B7E</color>
+    <color name="reb_D02626">#D02626</color>
     <color name="black_666666">#666666</color>
     <color name="black_333333">#333333</color>
     <color name="black_999999">#999999</color>
@@ -26,5 +27,6 @@
     <color name="orange_EF9E11">#EF9E11</color>
     <color name="blue_8EB1F7">#8EB1F7</color>
     <color name="yellow_F6E416">#F6E416</color>
+    <color name="green_1EC75E">#1EC75E</color>
 
 </resources>

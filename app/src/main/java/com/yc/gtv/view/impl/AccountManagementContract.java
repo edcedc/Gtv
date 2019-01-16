@@ -17,6 +17,8 @@ public interface AccountManagementContract {
     abstract class Presenter extends BasePresenter<View> {
 
         public abstract void onUpdateHead(String path);
+
+        public abstract void onSaveName(String name);
     }
 
 }

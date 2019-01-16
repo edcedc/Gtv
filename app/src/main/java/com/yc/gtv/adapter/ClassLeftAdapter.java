@@ -46,7 +46,7 @@ public class ClassLeftAdapter extends BaseListViewAdapter<DataBean> {
         }
         DataBean bean = listBean.get(position);
         RoundViewDelegate delegate = viewHolder.tvName.getDelegate();
-        viewHolder.tvName.setText("保险学" + position);
+        viewHolder.tvName.setText(bean.getClassify());
         if (mPosition == position){
             viewHolder.tvName.setTextColor(act.getResources().getColor(R.color.white));
             delegate.setBackgroundColor(act.getResources().getColor(R.color.reb_FC739D));

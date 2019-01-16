@@ -85,7 +85,6 @@ public class InitializeService extends IntentService {
     private void initShare() {
         UMConfigure.init(this, Constants.ShareID, "Umeng", UMConfigure.DEVICE_TYPE_PHONE,"");
         PlatformConfig.setWeixin(Constants.WX_APPID, Constants.WX_SECRER);
-        PlatformConfig.setQQZone(Constants.QQ_APPID, Constants.QQ_KEY);
         //设置LOG开关，默认为false
         UMConfigure.setLogEnabled(true);
     }

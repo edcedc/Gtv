@@ -7,8 +7,9 @@
 
     <com.yanzhenjie.sofia.StatusView
         android:id="@+id/status_view"
+        android:background="@color/reb_7E394E"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/ly_search"
@@ -74,10 +75,11 @@
 
         </com.flyco.roundview.RoundLinearLayout>
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_cancel"
-            style="@style/Tv13black"
+            android:textSize="@dimen/size26"
             android:layout_height="match_parent"
+            android:layout_width="wrap_content"
             android:gravity="center"
             android:paddingLeft="@dimen/px40"
             android:paddingRight="@dimen/px20"

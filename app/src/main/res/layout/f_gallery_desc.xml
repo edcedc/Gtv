@@ -13,8 +13,6 @@
 
         <include layout="@layout/include_top" />
 
-
-
             <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
                 android:id="@+id/refreshLayout"
                 android:layout_width="match_parent"

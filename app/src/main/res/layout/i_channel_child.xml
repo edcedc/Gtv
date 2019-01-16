@@ -13,7 +13,8 @@
         android:layout_height="@dimen/px280"/>
 
     <TextView
-        android:text="xxxx"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:id="@+id/tv_text"
         android:layout_marginTop="@dimen/px20"
         android:layout_marginBottom="@dimen/px40"

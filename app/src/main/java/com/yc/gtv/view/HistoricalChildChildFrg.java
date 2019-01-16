@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.view.View;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.yc.gtv.R;
@@ -64,6 +65,7 @@ public class HistoricalChildChildFrg extends BaseFragment<HistoricalChildPresent
         super.onSupportVisible();
         if (!isRefresh){
             isRefresh = true;
+            showLoadDataing();
             mB.refreshLayout.startRefresh();
         }
     }
@@ -74,15 +76,20 @@ public class HistoricalChildChildFrg extends BaseFragment<HistoricalChildPresent
         mB.tvTotalSelection.setOnClickListener(this);
         mB.tvDel.setOnClickListener(this);
         if (adapter == null) {
-            adapter = new VideoDescListAdapter(act, listBean, type);
+            adapter = new VideoDescListAdapter(act, this, listBean, type);
         }
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.setEnableLoadmore(false);
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest(pagerNumber = 1, mType);
+                mPresenter.onRequest(pagerNumber = 1, mType, type);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                mPresenter.onRequest(pagerNumber += 1, mType, type);
             }
         });
         EventBus.getDefault().register(this);
@@ -135,18 +142,31 @@ public class HistoricalChildChildFrg extends BaseFragment<HistoricalChildPresent
                 break;
             case R.id.tv_del:
                 List<DataBean> temp = new ArrayList<>();
+                List<String> listStr = new ArrayList<>();
                 for (int i = 0; i < listBean.size(); i++) {
                     DataBean bean = listBean.get(i);
                     if (bean.isSelect()){
                         temp.add(bean);
+                        listStr.add(bean.getHistoryId());
                     }
                 }
                 listBean.removeAll(temp);
-                adapter.notifyDataSetChanged();
-                showLoadEmpty();
-
-                if (listBean.size() == 0)EventBus.getDefault().post(new HistoricalColseInEvent(false));
+                mPresenter.onDel(listStr);
+                for (String s:listStr){
+                    LogUtils.e(s);
+                }
                 break;
+        }
+    }
+
+    @Override
+    public void onDelSuccess() {
+        adapter.notifyDataSetChanged();
+        if (listBean.size() == 0) {
+            showLoadEmpty();
+            EventBus.getDefault().post(new HistoricalColseInEvent(false));
+        }else {
+            hideLoading();
         }
     }
 }

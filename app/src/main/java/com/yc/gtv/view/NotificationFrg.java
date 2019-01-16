@@ -1,6 +1,8 @@
 package com.yc.gtv.view;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
@@ -8,10 +10,10 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.NotificationAdapter;
 import com.yc.gtv.base.BaseFragment;
-import com.yc.gtv.base.BaseListContract;
-import com.yc.gtv.base.BaseListPresenter;
 import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.databinding.BRecyclerBinding;
+import com.yc.gtv.presenter.NotificationPresenter;
+import com.yc.gtv.view.impl.NotificationContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
  *  系统通知
  */
 
-public class NotificationFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding> implements BaseListContract.View{
+public class NotificationFrg extends BaseFragment<NotificationPresenter, BRecyclerBinding> implements NotificationContract.View{
 
     private List<DataBean> listBean = new ArrayList<>();
     private NotificationAdapter adapter;
@@ -41,6 +43,7 @@ public class NotificationFrg extends BaseFragment<BaseListPresenter, BRecyclerBi
         return R.layout.b_recycler;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.system_notification2));
@@ -50,11 +53,17 @@ public class NotificationFrg extends BaseFragment<BaseListPresenter, BRecyclerBi
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
         mB.refreshLayout.startRefresh();
-        mB.refreshLayout.setEnableLoadmore(false);
+        showLoadDataing();
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest("", pagerNumber = 1);
+                mPresenter.onRequest(pagerNumber = 1);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                mPresenter.onRequest(pagerNumber += 1);
             }
         });
         setSwipeBackEnable(false);

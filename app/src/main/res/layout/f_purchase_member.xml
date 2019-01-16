@@ -54,185 +54,22 @@
                 app:layout_constraintTop_toBottomOf="@id/fy_head"
                 style="@style/divider_1"/>
 
-            <LinearLayout
-                app:layout_constraintTop_toBottomOf="@id/view"
-                android:id="@+id/recyclerView"
+            <com.yc.gtv.weight.WithScrollGridView
+                android:id="@+id/gridView"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="@dimen/px30"
+                app:layout_constraintTop_toBottomOf="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-
-                <LinearLayout
-                    android:paddingTop="@dimen/px50"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/ly_price0"
-                        android:layout_marginRight="@dimen/px30"
-                        android:gravity="center"
-                        android:layout_width="@dimen/px200"
-                        android:layout_height="@dimen/px200"
-                        android:background="@mipmap/my_pay_card"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px30"
-                            android:background="@mipmap/card_01"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv12gray"
-                            android:text="（3天）"
-                            android:textColor="@color/white"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv14gray"
-                            android:layout_marginTop="@dimen/px30"
-                            android:layout_marginBottom="@dimen/px20"
-                            android:text="¥ 9"
-                            android:textColor="@color/yellow_F6E416"  />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ly_price1"
-                        android:layout_marginRight="@dimen/px30"
-                        android:gravity="center"
-                        android:layout_width="@dimen/px200"
-                        android:layout_height="@dimen/px200"
-                        android:background="@mipmap/my_pay_card"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px30"
-                            android:background="@mipmap/card_02"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv12gray"
-                            android:visibility="gone"
-                            android:text="（3天）"
-                            android:textColor="@color/white"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            android:layout_marginTop="@dimen/px50"
-                            style="@style/Tv14gray"
-                            android:text="¥ 59"
-                            android:textColor="@color/yellow_F6E416"  />
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/ly_price2"
-                        android:gravity="center"
-                        android:layout_width="@dimen/px200"
-                        android:layout_height="@dimen/px200"
-                        android:background="@mipmap/my_pay_card"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px30"
-                            android:background="@mipmap/card_03"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv12gray"
-                            android:text="（3个月）"
-                            android:textColor="@color/white"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv14gray"
-                            android:layout_marginTop="@dimen/px30"
-                            android:layout_marginBottom="@dimen/px20"
-                            android:text="¥ 159.3"
-                            android:textColor="@color/yellow_F6E416"  />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:paddingTop="@dimen/px50"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/ly_price3"
-                        android:layout_marginRight="@dimen/px30"
-                        android:gravity="center"
-                        android:layout_width="@dimen/px200"
-                        android:layout_height="@dimen/px200"
-                        android:background="@mipmap/my_pay_card"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px30"
-                            android:background="@mipmap/card_04"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv12gray"
-                            android:text="（3天）"
-                            android:visibility="gone"
-                            android:textColor="@color/white"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv14gray"
-                            android:layout_marginTop="@dimen/px50"
-                            android:text="¥ 247.8"
-                            android:textColor="@color/yellow_F6E416"  />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ly_price4"
-                        android:layout_marginRight="@dimen/px30"
-                        android:gravity="center"
-                        android:layout_width="@dimen/px200"
-                        android:layout_height="@dimen/px200"
-                        android:background="@mipmap/my_pay_card"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/px30"
-                            android:background="@mipmap/card_05"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv12gray"
-                            android:visibility="gone"
-                            android:text="（3天）"
-                            android:textColor="@color/white"  />
-
-                        <android.support.v7.widget.AppCompatTextView
-                            style="@style/Tv14gray"
-                            android:layout_marginTop="@dimen/px50"
-                            android:text="¥ 354"
-                            android:textColor="@color/yellow_F6E416"  />
-
-                    </LinearLayout>
-
-
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:numColumns="3"
+                android:verticalSpacing="@dimen/px20"
+                android:horizontalSpacing="@dimen/px10"
+                />
 
             <com.flyco.roundview.RoundTextView
                 android:id="@+id/bt_submit"
-                app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                app:layout_constraintTop_toBottomOf="@id/gridView"
                 android:layout_marginTop="@dimen/px80"
                 android:text="@string/sure3"
                 app:rv_cornerRadius="@dimen/px10"

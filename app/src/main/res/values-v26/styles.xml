@@ -42,13 +42,13 @@
     </style>
 
     <style name="TextStyle">
-        <item name="android:background">@null</item>
+        <!--<item name="android:background">@null</item>-->
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <!--<item name="android:autoSizeTextType">uniform</item>-->    <!--即可自适应  宽度 < 8 > 18-->
+        <item name="android:autoSizeTextType">uniform</item>    <!--即可自适应  宽度 < 8 > 18-->
+        <item name="android:autoSizeMinTextSize">10sp</item>
+        <item name="android:autoSizeMaxTextSize">20sp</item>
 
-        <!--<item name="android:autoSizeMinTextSize">8dp</item>-->
-        <!--<item name="android:autoSizeMaxTextSize">18dp</item>-->
         <!--<item name="android:gravity">center</item>-->
         <!--<item name="android:maxLines">3</item>-->
         <!--<item name="android:ellipsize">end</item>-->

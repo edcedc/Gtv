@@ -6,11 +6,13 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.CompoundButton;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FLoginBinding;
 import com.yc.gtv.presenter.LoginPresenter;
+import com.yc.gtv.utils.cache.SharedAccount;
 import com.yc.gtv.view.impl.LoginContract;
 
 /**
@@ -61,6 +63,18 @@ public class LoginFrg extends BaseFragment<LoginPresenter, FLoginBinding> implem
                 mB.etPwd.setSelection(passwordLength);
             }
         });
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        SharedAccount account = SharedAccount.getInstance(act);
+        String mobile = account.getMobile();
+        String pwd = account.getPwd();
+        if (!StringUtils.isEmpty(mobile) && !StringUtils.isEmpty(pwd)){
+            mB.etPhone.setText(mobile);
+            mB.etPwd.setText(pwd);
+        }
     }
 
     @Override

@@ -26,6 +26,8 @@ public class ChannelNameFrg extends BaseFragment<ChannelNamePresenter, FChannelN
 
     private List<DataBean> listBean = new ArrayList<>();
     private ChannelChildAdapter adapter;
+    private String id;
+    private String tagId;
 
     @Override
     public void initPresenter() {
@@ -34,7 +36,7 @@ public class ChannelNameFrg extends BaseFragment<ChannelNamePresenter, FChannelN
 
     @Override
     protected void initParms(Bundle bundle) {
-
+        id = bundle.getString("id");
     }
 
     @Override
@@ -44,22 +46,25 @@ public class ChannelNameFrg extends BaseFragment<ChannelNamePresenter, FChannelN
 
     @Override
     protected void initView(View view) {
-        setTitle(getString(R.string.channel_desc));
         if (adapter == null){
-            adapter = new ChannelChildAdapter(act, listBean);
+            adapter = new ChannelChildAdapter(act, this, listBean);
         }
         mB.gridView.setAdapter(adapter);
+        showLoadDataing();
         mB.refreshLayout.startRefresh();
-        mB.refreshLayout.setEnableLoadmore(false);
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest(pagerNumber = 1);
+                mPresenter.onChannelGetChannelTagDetail(id);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                mPresenter.onRequest(tagId, pagerNumber += 1);
             }
         });
 
-        GlideLoadingUtils.load(act, "http://ww3.sinaimg.cn/large/0073tLPGgy1fxdg9yqrbqj30k00u0wfh.jpg", mB.ivImg);
-        mB.tvContent.setText("频道介绍介绍介绍介绍介绍介绍事实上事实上事实上身上收拾收拾.......................最多显示两行");
     }
 
     @Override
@@ -86,4 +91,12 @@ public class ChannelNameFrg extends BaseFragment<ChannelNamePresenter, FChannelN
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onChannelGetChannelTagDetailSuccess(DataBean bean) {
+        setTitle(bean.getTagName());
+        GlideLoadingUtils.load(act, bean.getPoster(), mB.ivImg);
+        mB.tvContent.setText(bean.getRemark());
+        tagId = bean.getTagId();
+        mPresenter.onRequest(tagId, pagerNumber = 1);
+    }
 }

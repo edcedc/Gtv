@@ -44,7 +44,6 @@
             android:textColor="#ffffff" />
 
         <SeekBar
-            android:visibility="invisible"
             android:id="@+id/progress"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -65,6 +64,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:text="00:00"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/tv_resolving_power"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:text="480p"
             android:textColor="#ffffff" />
 
         <ImageView

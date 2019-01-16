@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/px30"
+    android:paddingRight="@dimen/px30"
+    android:paddingTop="@dimen/px30"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginLeft="@dimen/px20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/tv_title"
+        style="@style/Tv14black" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginLeft="@dimen/px20"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/tv_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        android:layout_marginTop="@dimen/px10"
+        style="@style/Tv12gray"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_marginRight="@dimen/px20"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="@dimen/px30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        android:id="@+id/tv_price"
+        style="@style/Tv14black" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_marginTop="@dimen/px30"
+        app:layout_constraintTop_toBottomOf="@+id/tv_time"
+        style="@style/divider_1"/>
+
+</android.support.constraint.ConstraintLayout>

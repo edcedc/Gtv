@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
@@ -29,14 +28,16 @@ public class NotificationAdapter extends BaseRecyclerviewAdapter<DataBean>{
     @Override
     protected void onBindViewHolde(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        DataBean bean = listBean.get(position);
-        viewHolder.tvTitle.setText("系统公告标题");
-        viewHolder.tvTime.setText("2018-09-06");
-        viewHolder.tvContent.setText("系统公告内容那热闹热闹热热闹内容内容最多显示一行系统公告内容那热闹热闹热热闹内容内容最多显示一行");
+        final DataBean bean = listBean.get(position);
+        viewHolder.tvTitle.setText(bean.getTitle());
+        String[] split = bean.getCreateTime().split(" ");
+        viewHolder.tvTime.setText(split[0]);
+        bean.setCreateTime(split[0]);
+        viewHolder.tvContent.setText(bean.getContext());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIHelper.startNotificationDescFrg(root);
+                UIHelper.startNotificationDescFrg(root, bean);
             }
         });
     }

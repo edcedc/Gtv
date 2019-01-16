@@ -11,6 +11,7 @@ public interface ForgetPwdContract {
 
     interface View extends IBaseView {
 
+        void onCodeSuccess();
     }
 
     abstract class Presenter extends BasePresenter<View> {

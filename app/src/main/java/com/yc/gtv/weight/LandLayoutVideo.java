@@ -25,14 +25,17 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
      */
     public LandLayoutVideo(Context context, Boolean fullFlag) {
         super(context, fullFlag);
+        init();
     }
 
     public LandLayoutVideo(Context context) {
         super(context);
+        init();
     }
 
     public LandLayoutVideo(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
     protected void init(){
@@ -43,6 +46,13 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
                 return true;
             }
         });
+
+//        findViewById(R.id.tv_resolving_power).setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                LogUtils.e("xxxxxxxxxx");
+//            }
+//        });
     }
 
 

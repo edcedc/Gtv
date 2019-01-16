@@ -11,11 +11,14 @@ public interface GalleryDescContract {
 
     interface View extends IBaseListView {
 
+        void onCollectionSuccess(int type);
     }
 
     abstract class Presenter extends BasePresenter<View> {
 
-        public abstract void onRequest(int pagerNumber);
+        public abstract void onRequest(String id);
+
+        public abstract void onCollection(String id, int type);
     }
 
 }

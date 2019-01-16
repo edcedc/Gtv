@@ -1,5 +1,6 @@
 package com.yc.gtv.view;
 
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -7,13 +8,19 @@ import android.view.View;
 
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.umeng.socialize.ShareAction;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.GalleryAdapter;
 import com.yc.gtv.base.BaseFragment;
-import com.yc.gtv.base.BaseListContract;
-import com.yc.gtv.base.BaseListPresenter;
 import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.databinding.BRecyclerBinding;
+import com.yc.gtv.event.CollectionInEvent;
+import com.yc.gtv.presenter.GalleryPresenter;
+import com.yc.gtv.utils.ShareTool;
+import com.yc.gtv.view.impl.GalleryContract;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +30,9 @@ import java.util.List;
  *  图库
  */
 
-public class GalleryFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding> implements BaseListContract.View{
+public class GalleryFrg extends BaseFragment<GalleryPresenter, BRecyclerBinding> implements GalleryContract.View{
+
+    private ShareAction shareAction;
 
     public static GalleryFrg newInstance() {
         Bundle args = new Bundle();
@@ -34,6 +43,7 @@ public class GalleryFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
 
     private List<DataBean> listBean = new ArrayList<>();
     private GalleryAdapter adapter;
+    private boolean isRefresh = true;
 
     @Override
     public void initPresenter() {
@@ -59,20 +69,63 @@ public class GalleryFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
         }
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.startRefresh();
-        mB.refreshLayout.setEnableLoadmore(false);
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest("", pagerNumber = 1);
+                mPresenter.onRequest(pagerNumber = 1);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                mPresenter.onRequest(pagerNumber += 1);
             }
         });
         setSwipeBackEnable(false);
+        adapter.setOnClickListener(new GalleryAdapter.OnClickListener() {
+            @Override
+            public void collection(int position, int type, String id, boolean collected) {
+                mPresenter.onCollection(position, type, id);
+            }
+
+            @Override
+            public void share() {
+                shareAction.open();
+            }
+        });
+        EventBus.getDefault().register(this);
+        shareAction = ShareTool.getInstance().shareAction(act, "https://www.baidu.com/");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+        ShareTool.getInstance().release(act);
+    }
+
+    /**
+     * 屏幕横竖屏切换时避免出现window leak的问题
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        shareAction.close();
+    }
+
+    @Subscribe
+    public void onCollectionMainThreadEvent(CollectionInEvent event){
+
     }
 
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
+        if (isRefresh){
+            mB.refreshLayout.startRefresh();
+            showLoadDataing();
+            isRefresh = false;
+        }
     }
 
     @Override
@@ -97,5 +150,12 @@ public class GalleryFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
         }
         listBean.addAll(list);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCollectionSuccess(int position) {
+        DataBean bean = listBean.get(position);
+        bean.setCollected(true);
+        adapter.notifyItemChanged(position);
     }
 }

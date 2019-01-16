@@ -1,18 +1,16 @@
 package com.yc.gtv.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 
+import com.blankj.utilcode.util.KeyboardUtils;
+import com.blankj.utilcode.util.StringUtils;
 import com.luck.picture.lib.PictureSelector;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
+import com.yc.gtv.base.User;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FAccounManagementBinding;
 import com.yc.gtv.event.CameraInEvent;
@@ -25,6 +23,7 @@ import com.yc.gtv.weight.PictureSelectorTool;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,11 +75,11 @@ public class AccountManagementFrg extends BaseFragment<AccountManagementPresente
             }
         });
         EventBus.getDefault().register(this);
-        mB.etName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+       /* mB.etName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 //判断是否是“完成”键
-                if(actionId == EditorInfo.IME_ACTION_SEND){
+                if(actionId == EditorInfo.IME_ACTION_DONE){
                     //隐藏软键盘
                     InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     if (imm.isActive()) {
@@ -91,7 +90,39 @@ public class AccountManagementFrg extends BaseFragment<AccountManagementPresente
                 }
                 return false;
             }
+        });*/
+        JSONObject userInfo = User.getInstance().getUserInfo();
+        GlideLoadingUtils.load(act, userInfo.optString("headImg"), mB.ivHead);
+        mB.etName.setText(userInfo.optString("nickname"));
+        mB.tvPhoneNum.setText(userInfo.optString("mobile"));
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        isSupportVisible = true;
+        KeyboardUtils.registerSoftInputChangedListener(act, new KeyboardUtils.OnSoftInputChangedListener() {
+            @Override
+            public void onSoftInputChanged(int height) {
+                if (!KeyboardUtils.isSoftInputVisible(act) && isSupportVisible){
+                    JSONObject userInfo = User.getInstance().getUserInfo();
+                    String nickname = userInfo.optString("nickname");
+                    String trim = mB.etName.getText().toString().trim();
+                    if (StringUtils.isEmpty(trim) && trim.equals(nickname)){
+                        mB.etName.setText(nickname);
+                    }else {
+                        mPresenter.onSaveName(trim);
+                    }
+                }
+            }
         });
+    }
+
+    private boolean isSupportVisible = false;
+    @Override
+    public void onSupportInvisible() {
+        super.onSupportInvisible();
+        isSupportVisible = false;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -99,7 +130,7 @@ public class AccountManagementFrg extends BaseFragment<AccountManagementPresente
         if (cameraBottomFrg != null && cameraBottomFrg.isShowing())cameraBottomFrg.dismiss();
         localMediaList.clear();
         localMediaList.addAll(PictureSelector.obtainMultipleResult((Intent) event.getObject()));
-        String path = localMediaList.get(0).getCutPath();
+        String path = localMediaList.get(0).getCompressPath();
         mPresenter.onUpdateHead(path);
     }
 

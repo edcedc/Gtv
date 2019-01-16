@@ -4,14 +4,25 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.lzy.okgo.model.Response;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseActivity;
 import com.yc.gtv.base.BasePresenter;
+import com.yc.gtv.bean.BaseResponseBean;
+import com.yc.gtv.bean.DataBean;
+import com.yc.gtv.callback.Code;
+import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.databinding.AHtmlBinding;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * 作者：yc on 2018/7/25.
@@ -27,6 +38,8 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
     private int type = -1;
     private String title;
     private String content;
+
+    public static final int queryAPPAgreement = 0;//2: 用户协议，3: 会员权益说明 4: 推广规则
 
     @Override
     public void initPresenter() {
@@ -49,7 +62,17 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
 
     @Override
     protected void initView() {
-        mB.webView.loadUrl("https://www.baidu.com/");
+        setSofia(true);
+        switch (type){
+            case 2:
+                setTitle("用户协议");
+                getHtmlUrl();
+                break;
+            default:
+                setTitle("详情");
+                mB.webView.loadUrl(url);
+                break;
+        }
         mB.webView.setInitialScale(100);
         mB.webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -87,16 +110,12 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
         return super.onKeyDown(keyCode, event);
     }
 
-    private void getHtml(String id){
 
-    }
-
-    private void getHtmlUrl(String url){
-        /*CloudApi.html(url)
+    private void getHtmlUrl(){
+        CloudApi.commonQueryAPPAgreement(type)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        showLoading();
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
@@ -111,10 +130,7 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
                         if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
                             DataBean data = baseResponseBeanResponse.body().data;
                             if (data != null){
-                                if (StringUtils.isEmpty(title)){
-                                    setTitle(data.getTitle());
-                                }
-                                String remark = data.getRemark();
+                                String remark = data.getContext();
                                 if (StringUtils.isEmpty(remark)){
                                     remark = data.getContent();
                                 }
@@ -132,9 +148,8 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
 
                     @Override
                     public void onComplete() {
-                        hideLoading();
                     }
-                });*/
+                });
     }
 
     @Override

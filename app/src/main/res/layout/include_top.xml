@@ -5,12 +5,11 @@
     android:layout_width="match_parent"
     android:id="@+id/top_layout"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <com.yanzhenjie.sofia.StatusView
         android:id="@+id/status_view"
-        android:background="@color/colorAccent"
+        android:background="@color/reb_7E394E"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -27,8 +26,12 @@
         app:titleTextColor="@color/colorAccent">
 
         <TextView
+            android:maxLines="1"
+            android:maxEms="5"
+            android:ellipsize="end"
             android:id="@+id/top_title"
             android:text="title"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -23,6 +23,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 
+import me.yokeyword.fragmentation.SupportFragment;
+
 /**
  * Created by edison on 2018/11/21.
  *  历史记录
@@ -54,8 +56,8 @@ public class HistoricalRecordsFrg extends BaseFragment<BasePresenter, FHistorica
     protected void initView(View view) {
         setTitle(getString(R.string.historical_sightseeing), getString(R.string.edit));
         topRight = view.findViewById(R.id.top_right);
-        mFragments.add(new HistoricalChildFrg(Constants.HISTORICAL_CHILD_VIDEO));
-        mFragments.add(new HistoricalChildFrg(Constants.HISTORICAL_CHILD_IMG));
+        mFragments.add(new HistoricalChildFrg(Constants.HISTORICAL_VIDEO));
+        mFragments.add(new HistoricalChildFrg(Constants.HISTORICAL_IMG));
 
         for (int i = 0; i < strings.length; i++) {
             mTabEntities.add(new TabEntity(strings[i], 0, 0));
@@ -122,4 +124,12 @@ public class HistoricalRecordsFrg extends BaseFragment<BasePresenter, FHistorica
             EventBus.getDefault().post(new HistoricalEditInEvent(false));
         }
     }
+
+    /**
+     * start other BrotherFragment
+     */
+    public void startBrotherFragment(SupportFragment targetFragment) {
+        start(targetFragment);
+    }
+
 }

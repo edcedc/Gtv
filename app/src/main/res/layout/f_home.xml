@@ -30,7 +30,7 @@
                     tl:tl_indicator_color="@color/reb_FC739D"
                     tl:tl_indicator_width="20dp"
                     tl:tl_tab_padding="15dp"
-                    tl:tl_tab_space_equal="true"
+                    tl:tl_tab_space_equal="false"
                     tl:tl_textsize="15sp"
                     tl:tl_textSelectColor="@color/black_333333"
                     tl:tl_textUnselectColor="@color/black_666666" />

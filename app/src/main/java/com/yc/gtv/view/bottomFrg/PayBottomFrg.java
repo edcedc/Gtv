@@ -9,6 +9,7 @@ import com.yc.gtv.adapter.PayAdapter;
 import com.yc.gtv.base.BaseBottomSheetFrag;
 import com.yc.gtv.bean.DataBean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,8 @@ public class PayBottomFrg extends BaseBottomSheetFrag {
     private String[] pays= {"支付宝", "微信支付", "奖励金支付"};
 
     private int payType = 0;
+    private BigDecimal payPrice;
+    private String payId;
 
     private PayAdapter adapter;
 
@@ -54,7 +57,7 @@ public class PayBottomFrg extends BaseBottomSheetFrag {
     public void initView(View view) {
         ListView listView = view.findViewById(R.id.listView);
         List<DataBean> listBean = new ArrayList<>();
-        int[] imgs = {R.mipmap.pay_zfb, R.mipmap.pay_wechat,R.mipmap.pay_jlj};
+        int[] imgs = {R.mipmap.pay_zfb, R.mipmap.pay_wechat, R.mipmap.pay_jlj};
         for (int i = 0;i < pays.length;i++){
             DataBean bean = new DataBean();
             bean.setImg(imgs[i]);
@@ -101,6 +104,11 @@ public class PayBottomFrg extends BaseBottomSheetFrag {
 
     public void setOnClickListener(OnClickListener listener){
         this.listener = listener;
+    }
+
+    public void setPay(BigDecimal price, String id) {
+        this.payPrice = price;
+        this.payId = id;
     }
 
     public interface OnClickListener{

@@ -3,15 +3,18 @@ package com.yc.gtv.controller;
 import android.os.Bundle;
 
 import com.blankj.utilcode.util.ActivityUtils;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yc.gtv.MainActivity;
 import com.yc.gtv.base.BaseFragment;
+import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.view.AccountManagementFrg;
 import com.yc.gtv.view.AllChannelFrg;
+import com.yc.gtv.view.BalanceDetailsFrg;
 import com.yc.gtv.view.ChannelNameFrg;
 import com.yc.gtv.view.ExtensionFrg;
 import com.yc.gtv.view.ExtensionShareFrg;
 import com.yc.gtv.view.ForgetPwdFrg;
-import com.yc.gtv.view.GalleryDescFrg;
 import com.yc.gtv.view.HistoricalRecordsFrg;
 import com.yc.gtv.view.LabelScreeningFrg;
 import com.yc.gtv.view.MainFrg;
@@ -25,10 +28,14 @@ import com.yc.gtv.view.PerformanceDescFrg;
 import com.yc.gtv.view.PurchaseMemberFrg;
 import com.yc.gtv.view.RegisterFrg;
 import com.yc.gtv.view.SearchFrg;
+import com.yc.gtv.view.act.GalleryDescAct;
 import com.yc.gtv.view.act.HtmlAct;
 import com.yc.gtv.view.act.LoginAct;
 import com.yc.gtv.view.act.SetAct;
 import com.yc.gtv.view.act.VideoDescAct;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -53,8 +60,14 @@ public final class UIHelper {
     }
 
 
-    public static void startHtmlAct() {
+    public static void startHtmlAct(String desc) {
         Bundle bundle = new Bundle();
+        bundle.putString("url", desc);
+        ActivityUtils.startActivity(bundle, HtmlAct.class);
+    }
+    public static void startHtmlAct(int type) {
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
         ActivityUtils.startActivity(bundle, HtmlAct.class);
     }
 
@@ -90,9 +103,12 @@ public final class UIHelper {
 
     /**
      * 影片详情
+     * @param id
      */
-    public static void startVideoDescAct() {
-        ActivityUtils.startActivity(VideoDescAct.class);
+    public static void startVideoDescAct(String id) {
+        Bundle bundle = new Bundle();
+        bundle.putString("id", id);
+        ActivityUtils.startActivity(bundle, VideoDescAct.class);
     }
 
     /**
@@ -118,9 +134,10 @@ public final class UIHelper {
     /**
      * 频道名称
      */
-    public static void startChannelNameFrg(BaseFragment root) {
+    public static void startChannelNameFrg(BaseFragment root, String tagId) {
         ChannelNameFrg frg = new ChannelNameFrg();
         Bundle bundle = new Bundle();
+        bundle.putString("id", tagId);
         frg.setArguments(bundle);
         ((MainFrg) root.getParentFragment()).startBrotherFragment(frg);
     }
@@ -128,11 +145,11 @@ public final class UIHelper {
     /**
      * 频道名称
      */
-    public static void startGalleryDescFrg(BaseFragment root) {
-        GalleryDescFrg frg = new GalleryDescFrg();
+    public static void startGalleryDescAct(String id, int position) {
         Bundle bundle = new Bundle();
-        frg.setArguments(bundle);
-        ((MainFrg) root.getParentFragment()).startBrotherFragment(frg);
+        bundle.putInt("position", position);
+        bundle.putString("id", id);
+        ActivityUtils.startActivity(bundle, GalleryDescAct.class);
     }
 
     /**
@@ -188,9 +205,10 @@ public final class UIHelper {
     /**
      * 通知详情
      */
-    public static void startNotificationDescFrg(BaseFragment root) {
+    public static void startNotificationDescFrg(BaseFragment root, DataBean bean) {
         NotificationDescFrg frg = new NotificationDescFrg();
         Bundle bundle = new Bundle();
+        bundle.putString("bean", new Gson().toJson(bean));
         frg.setArguments(bundle);
         root.start(frg);
     }
@@ -248,18 +266,28 @@ public final class UIHelper {
     /**
      * 标签筛选
      */
-    public static void startLabelScreeningFrg(BaseFragment root) {
+    public static void startLabelScreeningFrg(BaseFragment root, List<DataBean> list) {
         LabelScreeningFrg frg = new LabelScreeningFrg();
         Bundle bundle = new Bundle();
+        bundle.putString("list", new Gson().toJson(list, new TypeToken<ArrayList<DataBean>>() {}.getType()));
         frg.setArguments(bundle);
         root.start(frg);
     }
 
     /**
-     * 标签筛选
+     * 账户管理
      */
     public static void startAccountManagementFrg(BaseFragment root) {
         AccountManagementFrg frg = new AccountManagementFrg();
+        Bundle bundle = new Bundle();
+        frg.setArguments(bundle);
+        root.start(frg);
+    }
+   /**
+     * 余额明细
+     */
+    public static void startBalanceDetailsFrg(BaseFragment root) {
+        BalanceDetailsFrg frg = new BalanceDetailsFrg();
         Bundle bundle = new Bundle();
         frg.setArguments(bundle);
         root.start(frg);

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:paddingBottom="@dimen/px20"
@@ -9,6 +11,7 @@
 
     <CheckBox
         android:id="@+id/cb"
+        android:layout_gravity="center"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,49 +24,55 @@
     <com.yc.gtv.weight.RoundImageView
         android:id="@+id/iv_img"
         app:layout_constraintLeft_toRightOf="@id/cb"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="152dp"
+        android:layout_height="88dp"
         app:layout_constraintDimensionRatio="h, 160:101"
-        android:scaleType="centerCrop"
+        android:scaleType="fitXY"
         android:src="@mipmap/place_holder"
         app:layout_constraintRight_toLeftOf="@id/tv_title" />
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_title"
-        style="@style/Tv13gray"
-        android:layout_marginTop="@dimen/px20"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="0dp"
-        android:layout_marginLeft="@dimen/px20"
-        app:layout_constrainedWidth="true"
-        android:ellipsize="end"
-        android:maxLines="2"
-        app:layout_constraintLeft_toRightOf="@id/iv_img"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <com.example.library.AutoFlowLayout
-        android:id="@+id/rv_label"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/px10"
-        android:layout_marginLeft="@dimen/px10"
-        app:layout_constraintLeft_toRightOf="@id/iv_img"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        android:orientation="vertical">
 
-    <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/tv_num"
-        style="@style/Tv12gray"
-        android:layout_marginLeft="@dimen/px30"
-        android:layout_marginTop="@dimen/px10"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/iv_img"
-        app:layout_constraintTop_toBottomOf="@id/rv_label" />
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            style="@style/Tv13gray"
+            android:layout_marginTop="@dimen/px20"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/px20"
+            app:layout_constrainedWidth="true"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintLeft_toRightOf="@id/iv_img"
+            app:layout_constraintRight_toRightOf="parent" />
 
-    <android.support.constraint.Group
-        android:id="@+id/gp_img"
-        app:constraint_referenced_ids="rv_label, tv_num"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <com.zhy.view.flowlayout.TagFlowLayout
+            android:id="@+id/rv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/px20"
+            app:layout_constraintLeft_toRightOf="@id/iv_img"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_num"
+            style="@style/Tv12gray"
+            android:layout_gravity="bottom"
+            android:text="xxxxxxxx"
+            android:layout_marginLeft="@dimen/px30"
+            android:layout_marginTop="@dimen/px10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/iv_img"
+            app:layout_constraintTop_toBottomOf="@id/rv_label" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,8 @@
 package com.yc.gtv.view;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.DividerItemDecoration;
 import android.view.View;
 
@@ -12,6 +14,7 @@ import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BaseListContract;
 import com.yc.gtv.base.BaseListPresenter;
 import com.yc.gtv.bean.DataBean;
+import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.BRecyclerBinding;
 import com.yc.gtv.weight.LinearDividerItemDecoration;
@@ -35,6 +38,7 @@ public class ChannelFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
 
     private List<DataBean> listBean = new ArrayList<>();
     private ChannelAdapter adapter;
+    private boolean isRefresh = true;
 
     @Override
     public void initPresenter() {
@@ -51,6 +55,7 @@ public class ChannelFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
         return R.layout.b_recycler;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.channel), getString(R.string.all), false);
@@ -60,12 +65,11 @@ public class ChannelFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.addItemDecoration(new LinearDividerItemDecoration(act, DividerItemDecoration.VERTICAL,  5));
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.startRefresh();
         mB.refreshLayout.setEnableLoadmore(false);
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest("", pagerNumber = 1);
+                mPresenter.onRequest(CloudApi.channelGetAllChannelTag);
             }
         });
         setSwipeBackEnable(false);
@@ -80,6 +84,11 @@ public class ChannelFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
     @Override
     public void onSupportVisible() {
         super.onSupportVisible();
+        if (isRefresh){
+            mB.refreshLayout.startRefresh();
+            showLoadDataing();
+            isRefresh = false;
+        }
     }
 
     @Override
@@ -96,12 +105,8 @@ public class ChannelFrg extends BaseFragment<BaseListPresenter, BRecyclerBinding
     @Override
     public void setData(Object data) {
         List<DataBean> list = (List<DataBean>) data;
-        if (pagerNumber == 1) {
-            listBean.clear();
-            mB.refreshLayout.finishRefreshing();
-        } else {
-            mB.refreshLayout.finishLoadmore();
-        }
+        listBean.clear();
+        mB.refreshLayout.finishRefreshing();
         listBean.addAll(list);
         adapter.notifyDataSetChanged();
     }

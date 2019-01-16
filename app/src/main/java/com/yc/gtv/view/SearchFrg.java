@@ -1,8 +1,11 @@
 package com.yc.gtv.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -41,7 +44,7 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
     private EditText etSearch;
     private List<DataBean> listBean = new ArrayList<>();
     private VideoDescListAdapter adapter;
-    private View tvCancel;
+    private AppCompatTextView tvCancel;
 
     @Override
     public void initPresenter() {
@@ -58,6 +61,7 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
         return R.layout.f_search;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         etSearch = view.findViewById(R.id.et_searh);
@@ -75,13 +79,17 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
         }
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.setEnableLoadmore(false);
         mPresenter.onRequest(1);
-
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
                 mPresenter.onSearch(etSearch.getText().toString().trim(), pagerNumber = 1);
+            }
+
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                super.onLoadMore(refreshLayout);
+                mPresenter.onSearch(etSearch.getText().toString().trim(), pagerNumber += 1);
             }
         });
 
@@ -97,7 +105,8 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
                     if (imm.isActive()) {
                         imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
                     }
-                    mPresenter.onSaveHistory(etSearch.getText().toString().trim(), mB.gpList, mB.recyclerView, mB.refreshLayout);
+                    etSearch.setText(etSearch.getText().toString().trim());
+                    mPresenter.onSaveHistory(etSearch.getText().toString().trim(), mB.gpList, mB.recyclerView, mB.refreshLayout, pagerNumber = 1);
 
                     return true;
                 }
@@ -132,6 +141,7 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.ECLAIR)
     @Override
     public void onClick(View view) {
         switch (view.getId()){
@@ -141,9 +151,11 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
             case R.id.tv_cancel:
                 etSearch.setText("");
                 tvCancel.setVisibility(View.GONE);
+                mB.gpList.setVisibility(View.VISIBLE);
+                mB.recyclerView.setVisibility(View.GONE);
                 break;
             case R.id.iv_search:
-                mPresenter.onSaveHistory(etSearch.getText().toString().trim(), mB.gpList, mB.recyclerView, mB.refreshLayout);
+                mPresenter.onSaveHistory(etSearch.getText().toString().trim(), mB.gpList, mB.recyclerView, mB.refreshLayout, pagerNumber = 1);
                 break;
             case R.id.fy_del:
                 LitePal.deleteAll(SaveSearchListBean.class);
@@ -173,15 +185,15 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
                 View view = View.inflate(act, R.layout.i_search_label, null);
                 TextView tvText = view.findViewById(R.id.tv_text);
                 DataBean bean = list.get(i);
-                tvText.setText("标签" + i);
-
+                tvText.setText(bean.getName());
                 return view;
             }
         });
         mB.rvHotSearch.setOnItemClickListener(new AutoFlowLayout.OnItemClickListener() {
             @Override
             public void onItemClick(int i, View view) {
-                mPresenter.onSaveHistory(list.get(i).getName(), mB.gpList, mB.recyclerView, mB.refreshLayout);
+                etSearch.setText(list.get(i).getName());
+                mPresenter.onSaveHistory(list.get(i).getName(), mB.gpList, mB.recyclerView, mB.refreshLayout, pagerNumber = 1);
             }
         });
 
@@ -205,7 +217,8 @@ public class SearchFrg extends BaseFragment<SearchPresenter, FSearchBinding> imp
             mB.rvHistoricalRecords.setOnItemClickListener(new AutoFlowLayout.OnItemClickListener() {
                 @Override
                 public void onItemClick(int i, View view) {
-                    mPresenter.onSaveHistory(all.get(i).getContent(), mB.gpList, mB.recyclerView, mB.refreshLayout);
+                    etSearch.setText(all.get(i).getContent());
+                    mPresenter.onSaveHistory(all.get(i).getContent(), mB.gpList, mB.recyclerView, mB.refreshLayout, pagerNumber = 1);
                 }
             });
         }

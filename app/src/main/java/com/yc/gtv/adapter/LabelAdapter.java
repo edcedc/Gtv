@@ -1,9 +1,10 @@
 package com.yc.gtv.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseListViewAdapter;
@@ -32,17 +33,20 @@ public class LabelAdapter extends BaseListViewAdapter<DataBean>{
         }
         final DataBean bean = listBean.get(position);
         viewHolder.tvName.setText(bean.getName());
-        viewHolder.tvName.setCompoundDrawablesWithIntrinsicBounds(null,
-               act.getResources().getDrawable(bean.getImg(), null), null, null);
+//        viewHolder.tvName.setCompoundDrawablesWithIntrinsicBounds(null,
+//               act.getResources().getDrawable(bean.getImg(), null), null, null);
+        viewHolder.ivImg.setBackgroundResource(bean.getImg());
         return convertView;
     }
 
     class ViewHolder {
 
-        TextView tvName;
+        AppCompatTextView tvName;
+        ImageView ivImg;
 
         public ViewHolder(View convertView) {
             tvName = convertView.findViewById(R.id.tv_name);
+            ivImg = convertView.findViewById(R.id.iv_img);
         }
     }
 

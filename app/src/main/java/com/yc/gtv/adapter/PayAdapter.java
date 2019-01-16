@@ -8,7 +8,10 @@ import android.widget.TextView;
 
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseListViewAdapter;
+import com.yc.gtv.base.User;
 import com.yc.gtv.bean.DataBean;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -46,8 +49,9 @@ public class PayAdapter extends BaseListViewAdapter<DataBean> {
         }
         if (position == 2){
             viewHolder.tvOnus.setVisibility(View.VISIBLE);
+            JSONObject userInfo = User.getInstance().getUserInfo();
             viewHolder.tvOnus.setText("余额：" +
-                    "100.85");
+                    userInfo.optDouble("bonus"));
         }else {
             viewHolder.tvOnus.setVisibility(View.GONE);
         }

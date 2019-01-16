@@ -67,6 +67,8 @@ public class PictureSelectorTool {
                 .sizeMultiplier(0.5f)// glide 加载图片大小 0~1之间 如设置 .glideOverride()无效
                 .enableCrop(enableCrop)// 是否裁剪 true or false
                 .circleDimmedLayer(circleDimmedLayer)// 是否圆形裁剪 true or false
+                .showCropFrame(circleDimmedLayer == true ? false : true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
                 .compress(true)// 是否压缩 true or false
                 .glideOverride(160, 160)// glide 加载宽高，越小图片列表越流畅，但会影响列表图片浏览的清晰度
                 .isGif(false)// 是否显示gif图片 true or false
@@ -124,6 +126,8 @@ public class PictureSelectorTool {
                 .enableCrop(true)// 是否裁剪 true or false
                 .circleDimmedLayer(circleDimmedLayer)
                 .compress(true)// 是否压缩 true or false
+                .showCropFrame(circleDimmedLayer == true ? false : true)// 是否显示裁剪矩形边框 圆形裁剪时建议设为false   true or false
+                .showCropGrid(false)// 是否显示裁剪矩形网格 圆形裁剪时建议设为false    true or false
                 .cropCompressQuality(90)// 裁剪压缩质量 默认90 int
                 .minimumCompressSize(150)// 小于100kb的图片不压缩
                 .forResult(request);

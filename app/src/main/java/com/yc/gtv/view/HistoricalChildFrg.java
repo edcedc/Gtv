@@ -55,7 +55,7 @@ public class HistoricalChildFrg extends BaseFragment<BasePresenter, FHistoricalC
 
     @Override
     protected void initView(View view) {
-        if (type == Constants.HISTORICAL_CHILD_VIDEO){
+        if (type == Constants.HISTORICAL_VIDEO){
             mFragments.add(new HistoricalChildChildFrg(0, type));
             mFragments.add(new HistoricalChildChildFrg(1, type));
             mFragments.add(new HistoricalChildChildFrg(2, type));

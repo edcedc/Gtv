@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.example.library.AutoFlowLayout;
 import com.example.library.FlowAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.ClassLeftAdapter;
 import com.yc.gtv.base.BaseFragment;
@@ -77,7 +79,7 @@ public class AllChannelFrg extends BaseFragment<AllChannelPresenter, FAllChannel
                 DataBean bean = listSelected.get(i);
                 listSelected.remove(i);
                 initRvLabel();
-                EventBus.getDefault().post(new SelectedLabelEvent(bean.getId()));
+                EventBus.getDefault().post(new SelectedLabelEvent(bean, 1));
             }
         });
     }
@@ -90,22 +92,25 @@ public class AllChannelFrg extends BaseFragment<AllChannelPresenter, FAllChannel
                 View view = View.inflate(act, R.layout.i_selected_label, null);
                 TextView tvText = view.findViewById(R.id.tv_text);
                 DataBean bean = listSelected.get(i);
-                tvText.setText("标签" + bean.getName());
+                tvText.setText(bean.getTagName());
                 return view;
             }
         });
     }
 
+    /**
+     *  添加或删除  到已选标签里面
+     * @param event
+     */
     @Subscribe
     public void onSelectedLabelMainInEvent(SelectedLabelEvent event){
+        if (event.type != 0)return;
+        DataBean bean1 = event.bean;
         if (event.select){
-            DataBean bean = new DataBean();
-            bean.setName(event.content);
-            bean.setId(event.id);
-            listSelected.add(bean);
+            listSelected.add(bean1);
         }else {
             for (DataBean bean : listSelected){
-                if (bean.getId().equals(event.id)){
+                if (bean.getTagId().equals(bean1.getTagId())){
                     listSelected.remove(bean);
                     break;
                 }
@@ -123,7 +128,11 @@ public class AllChannelFrg extends BaseFragment<AllChannelPresenter, FAllChannel
     @Override
     protected void setOnRightClickListener() {
         super.setOnRightClickListener();
-        UIHelper.startLabelScreeningFrg(this);
+        if (listSelected.size() == 0){
+            showToast(getString(R.string.error_label));
+            return;
+        }
+        UIHelper.startLabelScreeningFrg(this, listSelected);
     }
 
     /**
@@ -147,7 +156,7 @@ public class AllChannelFrg extends BaseFragment<AllChannelPresenter, FAllChannel
         if (list != null) {
             for (int i = 0; i < list.size(); i++) {
                 DataBean bean = list.get(i);
-                fragments.add(createListFragments(i, bean.getId()));
+                fragments.add(createListFragments(i, bean.getList()));
             }
             for (Fragment f : fragments) {
                 transaction.add(R.id.fl_container, f);
@@ -157,10 +166,10 @@ public class AllChannelFrg extends BaseFragment<AllChannelPresenter, FAllChannel
         }
     }
 
-    private AllChannelRightFrg createListFragments(int position, String ids) {
+    private AllChannelRightFrg createListFragments(int position, List<DataBean> list) {
         AllChannelRightFrg fragment = new AllChannelRightFrg();
         Bundle bundle = new Bundle();
-        bundle.putString("id", ids);
+        bundle.putString("list", new Gson().toJson(list, new TypeToken<ArrayList<DataBean>>() {}.getType()));
         fragment.setArguments(bundle);
         return fragment;
     }

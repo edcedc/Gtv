@@ -8,9 +8,13 @@ import android.widget.CompoundButton;
 
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
+import com.yc.gtv.base.User;
 import com.yc.gtv.databinding.FForgetPwdBinding;
 import com.yc.gtv.presenter.ForgetPwdPresenter;
+import com.yc.gtv.utils.CountDownTimerUtils;
 import com.yc.gtv.view.impl.ForgetPwdContract;
+
+import org.json.JSONObject;
 
 /**
  * Created by edison on 2018/11/17.
@@ -48,6 +52,11 @@ public class ForgetPwdFrg extends BaseFragment<ForgetPwdPresenter, FForgetPwdBin
             mB.tvLogin.setCompoundDrawablesWithIntrinsicBounds(null,
                     getResources().getDrawable(R.mipmap.changepassword, null), null, null);
             mB.tvLogin.setText(getText(R.string.change_password));
+            JSONObject userInfo = User.getInstance().getUserInfo();
+            if (userInfo != null){
+                mB.etPhone.setEnabled(false);
+                mB.etPhone.setText(userInfo.optString("mobile"));
+            }
         }
 
         mB.fyClose.setOnClickListener(this);
@@ -82,5 +91,10 @@ public class ForgetPwdFrg extends BaseFragment<ForgetPwdPresenter, FForgetPwdBin
                 mPresenter.onSubmit(mB.etPhone.getText().toString(), mB.etCode.getText().toString(), mB.etPwd.getText().toString(), type);
                 break;
         }
+    }
+
+    @Override
+    public void onCodeSuccess() {
+        new CountDownTimerUtils(act, 60000, 1000, mB.btCode).start();
     }
 }

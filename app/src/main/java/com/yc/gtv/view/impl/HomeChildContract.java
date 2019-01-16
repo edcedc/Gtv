@@ -2,7 +2,6 @@ package com.yc.gtv.view.impl;
 
 import com.yc.gtv.base.BasePresenter;
 import com.yc.gtv.base.IBaseListView;
-import com.yc.gtv.base.IBaseView;
 import com.yc.gtv.bean.DataBean;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public interface HomeChildContract {
 
     abstract class Presenter extends BasePresenter<HomeChildContract.View> {
 
-        public abstract void onRequest(int pagerNumber);
+        public abstract void onRequest(int pagerNumber, String id);
         public abstract void onBanner();
     }
 

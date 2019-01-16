@@ -2,8 +2,19 @@ package com.yc.gtv.presenter;
 
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.blankj.utilcode.util.Utils;
+import com.lzy.okgo.model.Response;
 import com.yc.gtv.R;
+import com.yc.gtv.bean.BaseResponseBean;
+import com.yc.gtv.callback.Code;
+import com.yc.gtv.controller.CloudApi;
+import com.yc.gtv.utils.cache.SharedAccount;
 import com.yc.gtv.view.impl.RegisterContract;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by edison on 2018/11/17.
@@ -11,7 +22,7 @@ import com.yc.gtv.view.impl.RegisterContract;
 
 public class RegisterPresenter extends RegisterContract.Presenter{
     @Override
-    public void onSubmit(String phone, String code, String pwd, String pwd1, String num, boolean checked) {
+    public void onSubmit(final String phone, String code, final String pwd, String pwd1, String num, boolean checked) {
         if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(code) || StringUtils.isEmpty(pwd)){
             showToast(act.getString(R.string.error_));
             return;
@@ -32,6 +43,39 @@ public class RegisterPresenter extends RegisterContract.Presenter{
             showToast(act.getString(R.string.error_1));
             return;
         }
+        CloudApi.authRegister(phone, pwd, code, num)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mView.showLoading();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<BaseResponseBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.addDisposable(d);
+                    }
+
+                    @Override
+                    public void onNext(Response<BaseResponseBean> baseResponseBeanResponse) {
+                        if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
+                            SharedAccount.getInstance(Utils.getApp()).save(phone, pwd);
+                            act.onBackPressed();
+                        }
+                        showToast(baseResponseBeanResponse.body().message);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mView.hideLoading();
+                    }
+                });
     }
 
     @Override
@@ -44,8 +88,36 @@ public class RegisterPresenter extends RegisterContract.Presenter{
             showToast(act.getString(R.string.error_phone));
             return;
         }
-//        new CountDownTimerUtils(act, 60000, 1000, mB.tvCode).start();
+        CloudApi.authGetSms(phone)
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        mView.showLoading();
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<BaseResponseBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.addDisposable(d);
+                    }
 
+                    @Override
+                    public void onNext(Response<BaseResponseBean> baseResponseBeanResponse) {
+                        showToast(baseResponseBeanResponse.body().message);
+                        mView.onCodeSuccess();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.onError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        mView.hideLoading();
+                    }
+                });
     }
 
 }

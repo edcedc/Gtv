@@ -7,10 +7,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO" />-->
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
     <uses-permission android:name="android.permission.MEDIA_MOUNTED" />
     <!-- 硬件加速对X5视频播放非常重要，建议开启 -->
     <uses-permission android:name="android.permission.GET_TASKS" />
@@ -25,11 +25,13 @@
         android:debuggable="false"
         android:hardwareAccelerated="true"
         android:label="@string/app_name"
-        android:icon="@mipmap/login_logo"
+        android:icon="@mipmap/logo"
+        android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:allowBackup">
+
         <activity
             android:name=".view.act.SplashAct"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -47,6 +49,7 @@
         <activity
             android:name=".MainActivity"
             android:resizeableActivity="true"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.act.LoginAct"
@@ -58,6 +61,10 @@
             android:screenOrientation="portrait"/>
          <activity
             android:name=".view.act.SetAct"
+            android:resizeableActivity="true"
+            android:screenOrientation="portrait"/>
+         <activity
+            android:name=".view.act.GalleryDescAct"
             android:resizeableActivity="true"
             android:screenOrientation="portrait"/>
         <activity
@@ -75,7 +82,8 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <!-- 支付宝 -->
         <activity

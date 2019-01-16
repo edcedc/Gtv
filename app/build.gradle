@@ -13,11 +13,12 @@ android {
         versionName rootProject.ext.versionName as String
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a'
+            abiFilters 'armeabi', 'armeabi-v7a','arm64-v8a'
         }
         multiDexEnabled true
 
     }
+
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -139,22 +140,44 @@ dependencies {
     //选择相册
     implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.2.3'
 
-    //微信支付
+    //微信支付  一直是最新的，不用改
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1352_43618_sharewithdownload_withoutGame_obfs_20180918_120327.jar')
+//    implementation files('libs/tbs_sdk_thirdapp_v3.6.0.1352_43618_sharewithdownload_withoutGame_obfs_20180918_120327.jar')
+    //支付宝支付
     implementation files('libs/alipaySdk-20180601.jar')
+
     //播放视频
-    implementation 'com.shuyu:GSYVideoPlayer:6.0.1'
-    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.1'
+    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.1'
+
+    //    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.1'
+
+    //是否需要ExoPlayer模式
+
+    //    implementation 'com.shuyu:GSYVideoPlayer-exo2:6.0.1'
+
+    //更多ijk的编码支持
+    implementation 'com.shuyu:gsyVideoPlayer-ex_so:6.0.1'
+
     //流式布局
     implementation 'com.github.LRH1993:AutoFlowLayout:1.0.5'
+    compile 'com.hyman:flowlayout-lib:1.1.2'
+
     //数据库
     implementation 'org.litepal.android:java:3.0.0'
+
     //zking
     implementation 'com.google.zxing:core:3.3.0'
+
     //加载样式
     compile project(path: ':Loaddatalayout')
+
     //点击加载框
     compile project(path: ':ToprightmenuLibrary')
-    implementation files('libs/umeng-share-core-6.9.3.jar')
+//    implementation files('libs/utdid4all-1.1.5.3_proguard.jar')
+//    implementation files('libs/SecurityEnvSDK-release-1.1.0.jar')
+    implementation files('libs/umeng-share-wechat-simplify-6.9.4.jar')
+    implementation files('libs/umeng-sharetool-6.9.4.jar')
+    implementation files('libs/umeng-share-core-6.9.4.jar')
+    implementation files('libs/umeng-shareboard-widget-6.9.4.jar')
+    implementation files('libs/umeng-common-2.0.0.jar')
 }

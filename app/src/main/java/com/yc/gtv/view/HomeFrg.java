@@ -9,11 +9,12 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.MyPagerAdapter;
 import com.yc.gtv.base.BaseFragment;
+import com.yc.gtv.base.BaseListContract;
+import com.yc.gtv.base.BaseListPresenter;
 import com.yc.gtv.bean.DataBean;
+import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FHomeBinding;
-import com.yc.gtv.presenter.HomePresenter;
-import com.yc.gtv.view.impl.HomeContract;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  *  首页
  */
 
-public class HomeFrg extends BaseFragment<HomePresenter, FHomeBinding> implements HomeContract.View, View.OnClickListener{
+public class HomeFrg extends BaseFragment<BaseListPresenter, FHomeBinding> implements BaseListContract.View, View.OnClickListener{
 
     public static HomeFrg newInstance() {
         Bundle args = new Bundle();
@@ -55,7 +56,8 @@ public class HomeFrg extends BaseFragment<HomePresenter, FHomeBinding> implement
         etSearch.setLongClickable(false);
         etSearch.setTextIsSelectable(false);
         view.findViewById(R.id.ly_search).setOnClickListener(this);
-        mPresenter.onRequest();
+        showLoadDataing();
+        mPresenter.onRequest(CloudApi.homeClassify);
         setSwipeBackEnable(false);
     }
 
@@ -75,17 +77,27 @@ public class HomeFrg extends BaseFragment<HomePresenter, FHomeBinding> implement
     }
 
     @Override
-    public void setData(List<DataBean> listBean) {
+    public void setRefreshLayoutMode(int totalRow) {
+
+    }
+
+    @Override
+    public void setData(Object data) {
+        List<DataBean> list = (List<DataBean>) data;
         ArrayList<Fragment> mFragments = new ArrayList<>();
-        String[] strings = new String[listBean.size()];
-        for (int i = 0;i < listBean.size();i++){
-            DataBean bean = listBean.get(i);
-            strings[i] = "加载" + i;
-            mFragments.add(new HomeChildFrg());
+        String[] strings = new String[list.size()];
+        for (int i = 0;i < list.size();i++){
+            DataBean bean = list.get(i);
+            strings[i] = bean.getName();
+            HomeChildFrg frg = new HomeChildFrg();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", bean.getId());
+            frg.setArguments(bundle);
+            mFragments.add(frg);
         }
         mB.viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager(), mFragments, strings));
         mB.tbLayout.setViewPager(mB.viewPager);
-        mB.viewPager.setOffscreenPageLimit(listBean.size() - 1);
+        mB.viewPager.setOffscreenPageLimit(list.size() - 1);
         mB.tbLayout.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
@@ -98,4 +110,5 @@ public class HomeFrg extends BaseFragment<HomePresenter, FHomeBinding> implement
             }
         });
     }
+
 }

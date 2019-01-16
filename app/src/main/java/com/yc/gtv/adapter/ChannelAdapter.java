@@ -5,17 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BaseRecyclerviewAdapter;
 import com.yc.gtv.bean.DataBean;
-import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.weight.WithScrollGridView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,20 +28,13 @@ public class ChannelAdapter extends BaseRecyclerviewAdapter<DataBean>{
     @Override
     protected void onBindViewHolde(RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
-        DataBean bean = listBean.get(position);
-        viewHolder.tvTitle.setText("标题");
-        List<DataBean> listBean = new ArrayList<>();
-        for (int i =0;i < 4;i++){
-            listBean.add(new DataBean());
+        final DataBean bean = listBean.get(position);
+        viewHolder.tvTitle.setText(bean.getTitle());
+        final List<DataBean> dataList = bean.getDataList();
+        if (dataList != null && dataList.size() != 0){
+            ChannelChildAdapter adapter = new ChannelChildAdapter(act, root, dataList);
+            viewHolder.gridView.setAdapter(adapter);
         }
-        ChannelChildAdapter adapter = new ChannelChildAdapter(act, listBean);
-        viewHolder.gridView.setAdapter(adapter);
-        viewHolder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                UIHelper.startChannelNameFrg(root);
-            }
-        });
     }
 
     @Override

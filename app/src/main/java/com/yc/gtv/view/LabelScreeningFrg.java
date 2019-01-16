@@ -1,11 +1,15 @@
 package com.yc.gtv.view;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.library.AutoFlowLayout;
 import com.example.library.FlowAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.yc.gtv.R;
@@ -27,6 +31,7 @@ import java.util.List;
 public class LabelScreeningFrg extends BaseFragment<LabelScreeningPresenter, FLabelScreeningBinding> implements LabelScreeningContract.View{
 
     private List<DataBean> listBean = new ArrayList<>();
+    private List<DataBean> listLabel = new ArrayList<>();
     private VideoDescListAdapter adapter;
 
     @Override
@@ -36,7 +41,7 @@ public class LabelScreeningFrg extends BaseFragment<LabelScreeningPresenter, FLa
 
     @Override
     protected void initParms(Bundle bundle) {
-
+        listLabel = new Gson().fromJson(bundle.getString("list"), new TypeToken<ArrayList<DataBean>>() {}.getType());
     }
 
     @Override
@@ -44,6 +49,7 @@ public class LabelScreeningFrg extends BaseFragment<LabelScreeningPresenter, FLa
         return R.layout.f_label_screening;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.label_screening));
@@ -57,7 +63,19 @@ public class LabelScreeningFrg extends BaseFragment<LabelScreeningPresenter, FLa
         setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest(pagerNumber = 1);
+                mPresenter.onRequest(pagerNumber = 1, listLabel);
+            }
+        });
+
+        mB.rvHistoricalRecords.removeAllViews();
+        mB.rvHistoricalRecords.setAdapter(new FlowAdapter(listLabel) {
+            @Override
+            public View getView(final int i) {
+                View view = View.inflate(act, R.layout.i_selected_label, null);
+                TextView tvText = view.findViewById(R.id.tv_text);
+                DataBean bean = listLabel.get(i);
+                tvText.setText(bean.getTagName());
+                return view;
             }
         });
         mB.rvHistoricalRecords.setMultiChecked(true);
@@ -91,18 +109,5 @@ public class LabelScreeningFrg extends BaseFragment<LabelScreeningPresenter, FLa
         }
         listBean.addAll(list);
         adapter.notifyDataSetChanged();
-
-
-        mB.rvHistoricalRecords.removeAllViews();
-        mB.rvHistoricalRecords.setAdapter(new FlowAdapter(list) {
-            @Override
-            public View getView(final int i) {
-                View view = View.inflate(act, R.layout.i_selected_label, null);
-                TextView tvText = view.findViewById(R.id.tv_text);
-                DataBean bean = listBean.get(i);
-                tvText.setText("标签" + bean.getName());
-                return view;
-            }
-        });
     }
 }

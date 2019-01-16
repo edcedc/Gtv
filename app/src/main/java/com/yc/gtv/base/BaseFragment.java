@@ -53,6 +53,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.yanzhenjie.sofia.Sofia;
 import com.yc.gtv.R;
+import com.yc.gtv.event.LoginInEvent;
 import com.yc.gtv.event.PayInEvent;
 import com.yc.gtv.utils.Constants;
 import com.yc.gtv.utils.TUtil;
@@ -100,6 +101,7 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
     protected VB mB;
     public P mPresenter;
     private LoadDataLayout swipeLoadDataLayout;
+    private TwinklingRefreshLayout refreshLayout;
 
 
     protected int pagerNumber = 1;//网络请求默认第一页
@@ -194,12 +196,23 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
         mHandler.sendEmptyMessage(handler_success);
     }
 
+    public void onError(Throwable e, String errorName) {
+        errorText(e, errorName);
+    }
     public void onError(Throwable e) {
+        errorText(e, null);
+    }
+    private void errorText(Throwable e, String errorName){
         if (null != e) {
             mHandler.sendEmptyMessage(handler_hide);
             mHandler.sendEmptyMessage(handler_success);
-            LogUtils.e(e.getMessage());
+            LogUtils.e(e.getMessage(), errorName);
             showToast(e.getMessage());
+            if (refreshLayout != null){
+                refreshLayout.finishRefreshing();
+                refreshLayout.finishLoadmore();
+                showError();
+            }
         }else{
             LogUtils.e("请求之外Throwable,断点");
         }
@@ -254,6 +267,11 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
                         swipeLoadDataLayout.setStatus(LoadDataLayout.EMPTY);
                     }
                     break;
+                case handler_error:
+                    if (swipeLoadDataLayout != null && pagerNumber == 1) {
+                        swipeLoadDataLayout.setStatus(LoadDataLayout.ERROR);
+                    }
+                    break;
                 case handler_loadData:
                     if (swipeLoadDataLayout != null) {
                         swipeLoadDataLayout.setStatus(LoadDataLayout.LOADING);
@@ -275,10 +293,11 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
                         showToast("支付成功");
+                        LogUtils.e("支付成功");
                         EventBus.getDefault().post(new PayInEvent());
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        showToast("支付失败");
+                        showToast("支付取消");
                     }
                     break;
             }
@@ -297,6 +316,10 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
         mHandler.sendEmptyMessage(handler_empty);
     }
 
+    private void showError(){
+        mHandler.sendEmptyMessage(handler_error);
+    }
+
     protected void setRefreshLayout(TwinklingRefreshLayout refreshLayout, RefreshListenerAdapter listener) {
 //        ProgressLayout headerView = new ProgressLayout(act);
 //        refreshLayout.setHeaderView(headerView);
@@ -309,6 +332,7 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
         refreshLayout.setMaxHeadHeight(240);
         refreshLayout.setOverScrollHeight(200);
         refreshLayout.setOnRefreshListener(listener);
+        this.refreshLayout = refreshLayout;
     }
 
     /**
@@ -402,6 +426,9 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
 
     protected void setTitle(String title) {
         title(title, null, -1, true);
+    }
+    protected void setTitle(String title, int img) {
+        title(title, null, img, true);
     }
     protected void setTitle(String title, String right) {
         title(title,  right, -1, true);
@@ -526,4 +553,6 @@ public abstract class BaseFragment<P extends BasePresenter, VB extends ViewDataB
             }
         }).start();
     }
+
+
 }

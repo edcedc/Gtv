@@ -10,17 +10,17 @@ import java.util.List;
 public class BaseListBean<T> implements Serializable {
 
     private int totalRow;
+    private int pageCount;
+    private int total;
     private int pageNumber;
+    private int pageIndex;
     private int totalPage;
     private int pageSize;
     private boolean firstPage;
     private boolean lastPage;
     private List<T> list;
-    private String money;
 
-    public String getMoney() {
-        return money;
-    }
+
 
     public int getTotalRow() {
         return totalRow;
@@ -76,5 +76,40 @@ public class BaseListBean<T> implements Serializable {
 
     public void setList(List<T> list) {
         this.list = list;
+    }
+
+
+    private List<T> rows;
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public int getPageIndex() {
+        return pageIndex;
+    }
+
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
+
+    public List<T> getRows() {
+        return rows;
+    }
+
+    public void setRows(List<T> rows) {
+        this.rows = rows;
     }
 }

@@ -18,14 +18,14 @@ public class User {
     private JSONObject userObj;
     private String userId;
     private String sessionId;
-    private JSONObject userInfoObj;
+    private JSONObject userInfo;
 
-    public JSONObject getUserInfoObj() {
-        return userInfoObj;
+    public JSONObject getUserInfo() {
+        return userInfo;
     }
 
-    public void setUserInfoObj(JSONObject userInfoObj) {
-        this.userInfoObj = userInfoObj;
+    public void setUserInfo(JSONObject userInfo) {
+        this.userInfo = userInfo;
     }
 
     public void setUserObj(JSONObject userObj) {
@@ -46,25 +46,21 @@ public class User {
 
     public void setUserId(String userId) {
         if (userObj != null) {
-            this.userId = userObj.optString("id");
+            this.userId = userObj.optString("userId");
         }
     }
 
     public String getUserId() {
         if (userObj == null) {
-            if (userInfoObj == null){
-                return "获取失败";
-            }
-            userId = userInfoObj.optString("userId");
-        }else {
-            userId = userObj.optString("id");
+            return null;
         }
+        userId = userObj.optString("userId");
         return userId;
     }
 
     public void setSessionId(String sessionId) {
         if (userObj != null) {
-            this.sessionId = userObj.optString("sessionId");
+            this.sessionId = userObj.optString("token");
         }
     }
 
@@ -72,7 +68,7 @@ public class User {
         if (userObj == null) {
             return "";
         }
-        sessionId = userObj.optString("sessionId");
+        sessionId = userObj.optString("token");
         return sessionId;
     }
 }

@@ -8,11 +8,11 @@ public final class Code {
     /**
      * 访问成功
      */
-    public static final int CODE_SUCCESS = 1;
+    public static final int CODE_SUCCESS = 0;
     /**
      * 访问失败
      */
-    public static final int CODE_FAILED = 0;
+    public static final int CODE_FAILED = 1;
     /**
      * cookie丢失
      */

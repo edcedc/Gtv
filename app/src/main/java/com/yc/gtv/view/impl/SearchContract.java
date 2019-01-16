@@ -27,7 +27,7 @@ public interface SearchContract {
 
         public abstract void onRequest(int pagerNumber);
 
-        public abstract void onSaveHistory(String trim, Group gpList, RecyclerView recyclerView, TwinklingRefreshLayout refreshLayout);
+        public abstract void onSaveHistory(String trim, Group gpList, RecyclerView recyclerView, TwinklingRefreshLayout refreshLayout, int pagerNumber);
 
         public abstract void onSearch(String trim, int pagerNumber);
     }

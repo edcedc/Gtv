@@ -1,11 +1,13 @@
 package com.yc.gtv.view;
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.View;
 
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.blankj.utilcode.util.FileUtils;
+import com.blankj.utilcode.util.LogUtils;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.VideoDescListAdapter;
 import com.yc.gtv.base.BaseFragment;
@@ -14,6 +16,7 @@ import com.yc.gtv.databinding.FChildListBinding;
 import com.yc.gtv.event.HistoricalColseInEvent;
 import com.yc.gtv.event.HistoricalEditInEvent;
 import com.yc.gtv.presenter.MyCacheChildPresenter;
+import com.yc.gtv.utils.Constants;
 import com.yc.gtv.view.impl.MyCacheChildContract;
 
 import org.greenrobot.eventbus.EventBus;
@@ -64,6 +67,7 @@ public class MyCacheChildFrg extends BaseFragment<MyCacheChildPresenter, FChildL
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initView(View view) {
         mB.tvTotalSelection.setOnClickListener(this);
@@ -73,13 +77,8 @@ public class MyCacheChildFrg extends BaseFragment<MyCacheChildPresenter, FChildL
         }
         setRecyclerViewType(mB.recyclerView);
         mB.recyclerView.setAdapter(adapter);
-        mB.refreshLayout.setEnableLoadmore(false);
-        setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
-            @Override
-            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest();
-            }
-        });
+        mB.refreshLayout.setPureScrollModeOn();
+        mPresenter.onRequest(type);
         EventBus.getDefault().register(this);
         setSwipeBackEnable(false);
     }
@@ -98,11 +97,6 @@ public class MyCacheChildFrg extends BaseFragment<MyCacheChildPresenter, FChildL
     }
 
     @Override
-    public void setRefreshLayoutMode(int totalRow) {
-        super.setRefreshLayoutMode(listBean.size(), totalRow, mB.refreshLayout);
-    }
-
-    @Override
     public void hideLoading() {
         super.hideLoading();
         super.setRefreshLayout(pagerNumber, mB.refreshLayout);
@@ -111,12 +105,7 @@ public class MyCacheChildFrg extends BaseFragment<MyCacheChildPresenter, FChildL
     @Override
     public void setData(Object data) {
         List<DataBean> list = (List<DataBean>) data;
-        if (pagerNumber == 1) {
-            listBean.clear();
-            mB.refreshLayout.finishRefreshing();
-        } else {
-            mB.refreshLayout.finishLoadmore();
-        }
+        mB.refreshLayout.finishRefreshing();
         listBean.addAll(list);
         adapter.notifyDataSetChanged();
     }
@@ -130,18 +119,29 @@ public class MyCacheChildFrg extends BaseFragment<MyCacheChildPresenter, FChildL
                 break;
             case R.id.tv_del:
                 List<DataBean> temp = new ArrayList<>();
+                List<String> listStr = new ArrayList<>();
                 for (int i = 0; i < listBean.size(); i++) {
                     DataBean bean = listBean.get(i);
                     if (bean.isSelect()){
                         temp.add(bean);
+                        listStr.add(bean.getCover());
                     }
                 }
                 listBean.removeAll(temp);
                 adapter.notifyDataSetChanged();
-                showLoadEmpty();
 
-                if (listBean.size() == 0)EventBus.getDefault().post(new HistoricalColseInEvent(false));
+                for (String name:listStr){
+                    if (type == Constants.CACHE_IMG){
+                        boolean b = FileUtils.deleteFile( name);
+                    }else {
+                        boolean b = FileUtils.deleteFile(name);
+                    }
+                }
 
+                if (listBean.size() == 0) {
+                    showLoadEmpty();
+                    EventBus.getDefault().post(new HistoricalColseInEvent(false));
+                }
                 break;
         }
     }

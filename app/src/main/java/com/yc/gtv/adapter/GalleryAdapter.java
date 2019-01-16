@@ -9,9 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.luck.picture.lib.config.PictureConfig;
 import com.luck.picture.lib.entity.LocalMedia;
 import com.yc.gtv.R;
+import com.yc.gtv.base.BaseActivity;
 import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BaseRecyclerviewAdapter;
 import com.yc.gtv.bean.DataBean;
@@ -35,26 +37,25 @@ public class GalleryAdapter extends BaseRecyclerviewAdapter<DataBean>{
     private boolean isGallery = false;
 
     @Override
-    protected void onBindViewHolde(RecyclerView.ViewHolder holder, int position) {
+    protected void onBindViewHolde(RecyclerView.ViewHolder holder, final int position) {
         final ViewHolder viewHolder = (ViewHolder) holder;
-        DataBean bean = listBean.get(position);
-        GlideLoadingUtils.load(act, "http://ws2.sinaimg.cn/large/82e98952ly1fxaah3fs3vj20ku0kujur.jpg", viewHolder.ivImg);
+        final DataBean bean = listBean.get(position);
         if (isGallery){
+            Object[] imageUrls = bean.getImageUrls();
+            if (imageUrls.length != 0){
+                GlideLoadingUtils.load(act, imageUrls[0], viewHolder.ivImg);
+            }
             viewHolder.layout.setVisibility(View.VISIBLE);
-            viewHolder.tvContent.setText("图片集名称名称名称最多显示一行");
+            viewHolder.tvContent.setText(bean.getName());
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    UIHelper.startGalleryDescFrg(root);
+                    UIHelper.startGalleryDescAct(bean.getId(), position);
                 }
             });
-            viewHolder.tvCollection.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewHolder.tvCollection.setText("已收藏");
-                }
-            });
+            viewHolder.tvCollection.setText(bean.isCollected() == true ? "已收藏" : "收藏");
         }else {
+            GlideLoadingUtils.load(act, bean.getUrl(), viewHolder.ivImg);
             viewHolder.layout.setVisibility(View.GONE);
             viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,15 +64,53 @@ public class GalleryAdapter extends BaseRecyclerviewAdapter<DataBean>{
                     LocalMedia media = new LocalMedia();
                     media.setMimeType(PictureConfig.TYPE_IMAGE);
                     media.setPictureType("image/jpeg");
-                    media.setPath("http://ws2.sinaimg.cn/large/82e98952ly1fxaah3fs3vj20ku0kujur.jpg");
-                    localMediaList.add(media);
-                    localMediaList.add(media);
-                    localMediaList.add(media);
+                    media.setPath(bean.getUrl());
                     localMediaList.add(media);
                     PictureSelectorTool.PictureMediaType((Activity) act, localMediaList, 0);
                 }
             });
         }
+        viewHolder.tvCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!((BaseActivity)act).isLogin())return;
+                if (listener != null)listener.collection(position, 1, bean.getId(), bean.isCollected());
+            }
+        });
+        viewHolder.tvDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!((BaseActivity)act).isLogin())return;
+                if (!((BaseActivity)act).isMember())return;
+                Object[] imageUrls = bean.getImageUrls();
+                if (imageUrls.length != 0){
+                    ToastUtils.showLong("正在下载，请稍后...");
+                    for (int i = 0; i < imageUrls.length;i++){
+                        if (imageUrls.length > 1){
+                            GlideLoadingUtils.saveImage(act, (String) imageUrls[i], bean.getName() + i);
+                        }else {
+                            GlideLoadingUtils.saveImage(act, (String) imageUrls[i], bean.getName());
+                        }
+                    }
+                }
+            }
+        });
+        viewHolder.tvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!((BaseActivity)act).isLogin())return;
+                if (listener != null)listener.share();
+            }
+        });
+    }
+
+    private OnClickListener listener;
+    public void setOnClickListener(OnClickListener listener){
+        this.listener = listener;
+    }
+    public interface OnClickListener{
+        void collection(int position, int type, String id, boolean collected);
+        void share();
     }
 
     @Override

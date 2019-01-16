@@ -1,14 +1,12 @@
 package com.yc.gtv.base;
 
-import android.os.Handler;
-
 import com.lzy.okgo.model.Response;
+import com.yc.gtv.bean.BaseListBean;
 import com.yc.gtv.bean.BaseResponseBean;
 import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.callback.Code;
 import com.yc.gtv.controller.CloudApi;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -25,21 +23,7 @@ import io.reactivex.functions.Consumer;
 public class BaseListPresenter extends BaseListContract.Presenter{
     @Override
     public void onRequest(String url, int pagerNumber) {
-        mView.showLoadDataing();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                List<DataBean> list = new ArrayList<>();
-                for (int i =0;i < 10;i++){
-                    list.add(new DataBean());
-                }
-                mView.setData(list);
-                mView.hideLoading();
-            }
-        }, 1000);
-
-
-        /*CloudApi.list(pagerNumber, url)
+        CloudApi.list(pagerNumber, url)
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
@@ -57,10 +41,10 @@ public class BaseListPresenter extends BaseListContract.Presenter{
                         if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
                             BaseListBean<DataBean> data = baseResponseBeanResponse.body().data;
                             if (data != null){
-                                List<DataBean> list = data.getList();
+                                List<DataBean> list = data.getRows();
                                 if (list != null && list.size() != 0){
                                     mView.setData(list);
-                                    mView.setRefreshLayoutMode(data.getTotalRow());
+                                    mView.setRefreshLayoutMode(data.getTotal());
                                     mView.hideLoading();
                                 }else {
                                     mView.showLoadEmpty();
@@ -73,14 +57,14 @@ public class BaseListPresenter extends BaseListContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.onError(e);
+                        mView.onError(e, "list");
                     }
 
                     @Override
                     public void onComplete() {
 
                     }
-                });*/
+                });
     }
 
     @Override
@@ -102,9 +86,11 @@ public class BaseListPresenter extends BaseListContract.Presenter{
                     public void onNext(Response<BaseResponseBean<List<DataBean>>> baseResponseBeanResponse) {
                         if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
                             List<DataBean> data = baseResponseBeanResponse.body().data;
-                            if (data != null && data.size() != 0){
-                                mView.setData(data);
+                            mView.setData(data);
+                            if (data != null){
                                 mView.hideLoading();
+                            }else {
+                                mView.showLoadEmpty();
                             }
                         }else {
                             mView.showLoadEmpty();
@@ -113,7 +99,7 @@ public class BaseListPresenter extends BaseListContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.onError(e);
+                        mView.onError(e, "list2");
                     }
 
                     @Override

@@ -13,6 +13,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/iv_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -25,16 +26,27 @@
             app:layout_goneMarginTop="@dimen/px70" />
 
         <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tv_youhui"
+            android:id="@+id/tv_title"
             style="@style/Tv12gray"
-            android:textColor="@color/white"
+            android:textColor="@color/orange_EF9E11"
+            android:text="xxxxx"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_price" />
 
         <android.support.v7.widget.AppCompatTextView
+            android:id="@+id/tv_youhui"
+            style="@style/Tv12gray"
+            android:textColor="@color/white"
+            android:text="xxxxx"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/tv_price"
             style="@style/Tv14gray"
+            android:text="xxxxx"
             android:layout_marginBottom="@dimen/px30"
             android:textColor="@color/yellow_F6E416"
             app:layout_constraintBottom_toBottomOf="parent"

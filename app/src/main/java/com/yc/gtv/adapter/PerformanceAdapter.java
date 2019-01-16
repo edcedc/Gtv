@@ -37,7 +37,7 @@ public class PerformanceAdapter extends BaseExpandableListAdapter {
     //        获取指定分组中的子选项的个数
     @Override
     public int getChildrenCount(int groupPosition) {
-        return listBean.get(groupPosition).getProd().size();
+        return 1;
     }
 
     //        获取指定的分组数据
@@ -48,8 +48,8 @@ public class PerformanceAdapter extends BaseExpandableListAdapter {
 
     //        获取指定分组中的指定子选项数据
     @Override
-    public Object getChild(int groupPosition, int childPosition) {
-        return listBean.get(groupPosition).getProd();
+        public Object getChild(int groupPosition, int childPosition) {
+        return listBean.get(groupPosition).getDetail();
     }
 
     //        获取指定分组的ID, 这个ID必须是唯一的
@@ -81,7 +81,7 @@ public class PerformanceAdapter extends BaseExpandableListAdapter {
             viewHolder = (GroupViewHolder) convertView.getTag();
         }
         final DataBean bean = listBean.get(groupPosition);
-        viewHolder.tvTitle.setText("2018-06   " + groupPosition);
+        viewHolder.tvTitle.setText(bean.getDate());
         //判断isExpanded就可以控制是按下还是关闭，同时更换图片
         if(isExpanded){
             viewHolder.tvTitle.setCompoundDrawablesWithIntrinsicBounds(null,
@@ -103,13 +103,10 @@ public class PerformanceAdapter extends BaseExpandableListAdapter {
             viewHolder = (ChildViewHolder) convertView.getTag();
         }
         final DataBean bean = listBean.get(groupPosition);
-        final DataBean childBean = bean.getProd().get(childPosition);
-
-        viewHolder.tvName.setText("推广会员人数");
-        viewHolder.tvNum.setText("8人");
-        if (childPosition == bean.getProd().size() - 1){
-            viewHolder.view.setVisibility(View.GONE);
-        }
+        DataBean.InfoBean childBean = bean.getInfo();
+        viewHolder.tvNoVipStat.setText(childBean.getNoVipStat() + "人");
+        viewHolder.tvVipStat.setText(childBean.getVipStat() + "人");
+        viewHolder.tvPrice.setText(childBean.getTotalPrice() + "人");
         return convertView;
     }
 
@@ -130,14 +127,14 @@ public class PerformanceAdapter extends BaseExpandableListAdapter {
 
     class ChildViewHolder{
 
-        AppCompatTextView tvName;
-        AppCompatTextView tvNum;
-        View view;
+        AppCompatTextView tvNoVipStat;
+        AppCompatTextView tvVipStat;
+        AppCompatTextView tvPrice;
 
         public ChildViewHolder(View itemView) {
-            tvName = itemView.findViewById(R.id.tv_name);
-            tvNum = itemView.findViewById(R.id.tv_num);
-            view = itemView.findViewById(R.id.view);
+            tvNoVipStat = itemView.findViewById(R.id.tv_noVipStat);
+            tvVipStat = itemView.findViewById(R.id.tv_vipStat);
+            tvPrice = itemView.findViewById(R.id.tv_price);
         }
     }
 

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.library.AutoFlowLayout;
 import com.example.library.FlowAdapter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.bean.DataBean;
@@ -32,22 +34,13 @@ public class AllChannelRightFrg extends BaseFragment<AllChannelRightPresenter, F
     private List<DataBean> listBean = new ArrayList<>();
 
     @Override
-    public void onSupportVisible() {
-        super.onSupportVisible();
-        if (!isRefresh){
-            isRefresh = true;
-            mPresenter.onRequest();
-        }
-    }
-
-    @Override
     public void initPresenter() {
         mPresenter.init(this);
     }
 
     @Override
     protected void initParms(Bundle bundle) {
-
+        listBean = new Gson().fromJson(bundle.getString("list"), new TypeToken<ArrayList<DataBean>>() {}.getType());
     }
 
     @Override
@@ -59,6 +52,8 @@ public class AllChannelRightFrg extends BaseFragment<AllChannelRightPresenter, F
     protected void initView(View view) {
         mB.rvLabel.setMultiChecked(true);
         EventBus.getDefault().register(this);
+
+        setRyLabel();
     }
 
     @Override
@@ -67,11 +62,15 @@ public class AllChannelRightFrg extends BaseFragment<AllChannelRightPresenter, F
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     *  删除标签
+     * @param event
+     */
     @Subscribe
     public void onSelectedLabelMainInEvent(SelectedLabelEvent event){
-        String id = event.id;
+        if (event.type != 1)return;
         for (DataBean bean : listBean){
-            if (bean.getId().equals(id)){
+            if (bean.getTagId().equals(event.bean.getTagId())){
                 bean.setSelect(false);
                 break;
             }
@@ -93,7 +92,7 @@ public class AllChannelRightFrg extends BaseFragment<AllChannelRightPresenter, F
                 View view = View.inflate(act, R.layout.i_channel_label, null);
                 TextView tvText = view.findViewById(R.id.tv_text);
                 DataBean bean = listBean.get(i);
-                tvText.setText("标签" + i);
+                tvText.setText(bean.getTagName());
                 int[][] states = new int[][]{
                         new int[]{-android.R.attr.state_selected}, // unchecked
                         new int[]{android.R.attr.state_selected}  // checked
@@ -116,7 +115,7 @@ public class AllChannelRightFrg extends BaseFragment<AllChannelRightPresenter, F
                 } else {
                     bean.setSelect(false);
                 }
-                EventBus.getDefault().post(new SelectedLabelEvent(i + "", "添加" + i,  bean.isSelect()));
+                EventBus.getDefault().post(new SelectedLabelEvent(bean,  bean.isSelect(), 0));
             }
         });
     }

@@ -14,10 +14,12 @@ package com.yc.gtv.callback;/*
  * limitations under the License.
  */
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.blankj.utilcode.util.Utils;
 import com.google.gson.stream.JsonReader;
 import com.lzy.okgo.callback.AbsCallback;
 import com.yc.gtv.bean.BaseResponseBean;
+import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.utils.cache.ShareSessionIdCache;
 
 import java.lang.reflect.ParameterizedType;
@@ -51,6 +53,14 @@ public abstract class NewsCallback<T> extends AbsCallback<T> {
         Type rawType = ((ParameterizedType) type).getRawType();
         if (rawType == BaseResponseBean.class) {
             BaseResponseBean gankResponse = Convert.fromJson(jsonReader, type);
+            if (gankResponse.success == false){
+                String text = gankResponse.code + "\n" + gankResponse.message;
+                ToastUtils.showShort(text);
+//                LogUtils.e(text);
+//                throw new IllegalStateException(text);
+            }
+
+
             if (gankResponse.code == 1) {
                 response.close();
                 //noinspection unchecked
@@ -60,10 +70,10 @@ public abstract class NewsCallback<T> extends AbsCallback<T> {
                 response.close();
                 //noinspection unchecked
                 return (T) gankResponse;
-            } else if (gankResponse.code == 2){
+            } else if (gankResponse.code == 401){
                 response.close();
 //                UIHelper.startSplashAct();
-//                ActivityUtils.startActivity(LoginAct.class);
+                UIHelper.startLoginAct();
                 ShareSessionIdCache.getInstance(Utils.getApp()).remove();
 //                ActivityUtils.finishAllActivities();
                 throw new IllegalStateException("用户在第三方登录");

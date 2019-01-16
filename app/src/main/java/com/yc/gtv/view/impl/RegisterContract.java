@@ -10,6 +10,7 @@ import com.yc.gtv.base.IBaseView;
 public interface RegisterContract {
     interface View extends IBaseView {
 
+        void onCodeSuccess();
     }
 
     abstract class Presenter extends BasePresenter<View> {

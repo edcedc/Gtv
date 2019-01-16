@@ -7,8 +7,6 @@ import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.view.View;
 
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.PerformanceAdapter;
 import com.yc.gtv.base.BaseFragment;
@@ -48,25 +46,13 @@ public class PerformanceDescFrg extends BaseFragment<PerformanceDescPresenter, F
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.performance_desc));
-
-        showLoadDataing();
         if (adapter == null){
             adapter = new PerformanceAdapter(act, listBean);
         }
         mB.listView.setAdapter(adapter);
-        mB.refreshLayout.startRefresh();
-        mB.refreshLayout.setEnableLoadmore(false);
-        setRefreshLayout(mB.refreshLayout, new RefreshListenerAdapter() {
-            @Override
-            public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                mPresenter.onRequest(pagerNumber = 1);
-            }
-        });
-
-
-        mB.tvMonthPromotionPrice.setText("85.36元");
-        setTextSize("7人", mB.tvMonthPromotionNumber);
-        setTextSize("7人", mB.tvMonthPromotionMemberNumber);
+        mB.refreshLayout.setPureScrollModeOn();
+        showLoadDataing();
+        mPresenter.onRequest(pagerNumber = 1);
     }
 
     private void setTextSize(String str, AppCompatTextView textView){
@@ -77,26 +63,16 @@ public class PerformanceDescFrg extends BaseFragment<PerformanceDescPresenter, F
     }
 
     @Override
-    public void setRefreshLayoutMode(int totalRow) {
-        super.setRefreshLayoutMode(listBean.size(), totalRow, mB.refreshLayout);
-    }
-
-    @Override
-    public void hideLoading() {
-        super.hideLoading();
-        super.setRefreshLayout(pagerNumber, mB.refreshLayout);
-    }
-
-    @Override
-    public void setData(Object data) {
-        List<DataBean> list = (List<DataBean>) data;
-        if (pagerNumber == 1) {
-            listBean.clear();
-            mB.refreshLayout.finishRefreshing();
-        } else {
-            mB.refreshLayout.finishLoadmore();
+    public void setData(DataBean data) {
+        mB.tvMonthPromotionPrice.setText(data.getTotalPrice() + "元");
+        setTextSize(data.getNoVipStat() + "人", mB.tvMonthPromotionNumber);
+        setTextSize(data.getVipStat() + "人", mB.tvMonthPromotionMemberNumber);
+        List<DataBean> detail = data.getDetail();
+        if (detail != null && detail.size() != 0){
+            listBean.addAll(detail);
+            adapter.notifyDataSetChanged();
+            mB.listView.collapseGroup(0);
+            mB.listView.expandGroup(0);
         }
-        listBean.addAll(list);
-        adapter.notifyDataSetChanged();
     }
 }

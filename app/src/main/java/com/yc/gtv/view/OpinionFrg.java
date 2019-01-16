@@ -1,8 +1,10 @@
 package com.yc.gtv.view;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
-import android.widget.AdapterView;
 
 import com.yc.gtv.R;
 import com.yc.gtv.adapter.OpinionAdapter;
@@ -11,6 +13,7 @@ import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.databinding.FOpinionBinding;
 import com.yc.gtv.presenter.OpinionPresenter;
 import com.yc.gtv.view.impl.OpinionContract;
+import com.yc.gtv.weight.GridDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +27,7 @@ public class OpinionFrg extends BaseFragment<OpinionPresenter, FOpinionBinding> 
 
     private List<DataBean> listBean = new ArrayList<>();
     private OpinionAdapter adapter;
+    private String id;
 
     @Override
     public void initPresenter() {
@@ -43,24 +47,29 @@ public class OpinionFrg extends BaseFragment<OpinionPresenter, FOpinionBinding> 
     @Override
     protected void initView(View view) {
         setTitle(getString(R.string.opinion));
+        mB.refreshLayout.setPureScrollModeOn();
         if (adapter == null){
             adapter = new OpinionAdapter(act, listBean);
         }
+        mB.gridView.setLayoutManager(new GridLayoutManager(act, 2));
+        mB.gridView.setHasFixedSize(true);
+        mB.gridView.setItemAnimator(new DefaultItemAnimator());
+        mB.gridView.addItemDecoration(new GridDividerItemDecoration(20, ContextCompat.getColor(act,R.color.white_f4f4f4)));
         mB.gridView.setAdapter(adapter);
-        mB.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        adapter.setOnClickListener(new OpinionAdapter.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                DataBean bean = listBean.get(i);
-                mB.etText.setText(bean.getName());
-                adapter.setmPosition(i);
+            public void onClick(int position) {
+                DataBean bean = listBean.get(position);
+                adapter.setmPosition(position);
                 adapter.notifyDataSetChanged();
+                id = bean.getId();
             }
         });
         mPresenter.onLebel();
         mB.btSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.onSubmit(mB.etText.getText().toString());
+                mPresenter.onSubmit(id, mB.etText.getText().toString());
             }
         });
     }

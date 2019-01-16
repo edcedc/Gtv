@@ -21,7 +21,7 @@ public interface OpinionContract {
 
         public abstract void onLebel();
 
-        public abstract void onSubmit(String s);
+        public abstract void onSubmit(String id, String s);
     }
 
 }

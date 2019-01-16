@@ -5,9 +5,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.StringUtils;
 import com.yc.gtv.R;
+import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BaseListViewAdapter;
 import com.yc.gtv.bean.DataBean;
+import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.utils.GlideLoadingUtils;
 import com.yc.gtv.weight.RoundImageView;
 
@@ -19,8 +22,8 @@ import java.util.List;
 
 public class ChannelChildAdapter extends BaseListViewAdapter<DataBean>{
 
-    public ChannelChildAdapter(Context act, List<DataBean> listBean) {
-        super(act, listBean);
+    public ChannelChildAdapter(Context act, BaseFragment root, List<DataBean> listBean) {
+        super(act, root, listBean);
     }
 
     @Override
@@ -34,9 +37,36 @@ public class ChannelChildAdapter extends BaseListViewAdapter<DataBean>{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         final DataBean bean = listBean.get(position);
-        GlideLoadingUtils.load(act, "http://ww3.sinaimg.cn/large/0073tLPGgy1fx9mrev13xj30go0oj0y4.jpg", viewHolder.ivImg);
-        viewHolder.tvText.setText("标签名称");
-
+        String tagImage = bean.getTagImage();
+        if (StringUtils.isEmpty(tagImage)){
+            GlideLoadingUtils.load(act, bean.getCover(), viewHolder.ivImg);
+        }else {
+            GlideLoadingUtils.load(act, tagImage, viewHolder.ivImg);
+        }
+        String tagName = bean.getTagName();
+        if (StringUtils.isEmpty(tagName)){
+            viewHolder.tvText.setText(bean.getTitle());
+        }else {
+            viewHolder.tvText.setText(tagName);
+        }
+        /*viewHolder.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                DataBean bean1 = dataList.get(i);
+                UIHelper.startChannelNameFrg(root, bean1.getChannelId());
+            }
+        });*/
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String channelId = bean.getChannelId();
+                if (StringUtils.isEmpty(channelId)){
+                    UIHelper.startVideoDescAct(bean.getId());
+                }else {
+                    UIHelper.startChannelNameFrg(root, channelId);
+                }
+            }
+        });
         return convertView;
     }
 

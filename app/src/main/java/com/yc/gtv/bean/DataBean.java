@@ -59,6 +59,11 @@ public class DataBean implements Serializable {
     private int num;
     private Object[] imageUrls;
     private int residualViewCount;//播放视频剩余次数
+    private String linkUrl;
+
+    public String getLinkUrl() {
+        return linkUrl;
+    }
 
     public int getResidualViewCount() {
         return residualViewCount;

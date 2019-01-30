@@ -38,10 +38,10 @@ public class CloudApi {
     private static final String url =
 //            "10.0.0.200:8081/luxury_shopping/" ;
 //            "47.106.217.107/";
-            "tstapi.gzyunck.com/";
+            "gtvapp.top";
 
     public static final String SERVLET_IMG_URL = "http://" +
-            url;
+            url + "/";
 
     public static final String SERVLET_URL = SERVLET_IMG_URL + "api/";
 
@@ -117,6 +117,16 @@ public class CloudApi {
                 .adapt(new ObservableBody<JSONObject>())
                 .subscribeOn(Schedulers.io());
     }
+    /**
+     * 版本更新
+     */
+    public static Observable<JSONObject> versionVersionClient() {
+        return OkGo.<JSONObject>post(SERVLET_URL + "common/getAppDownloadUrl")
+                .converter(new JsonConvert<JSONObject>() {
+                })
+                .adapt(new ObservableBody<JSONObject>())
+                .subscribeOn(Schedulers.io());
+    }
 
 
     /**
@@ -157,6 +167,20 @@ public class CloudApi {
                 .headers("authorization", ShareSessionIdCache.getInstance(Utils.getApp()).getSessionId())
                 .params("id", id)
                 .params("type", type)
+                .converter(new NewsCallback<BaseResponseBean<DataBean>>() {
+                    @Override
+                    public void onSuccess(Response<BaseResponseBean<DataBean>> response) {
+
+                    }
+                })
+                .adapt(new ObservableResponse<BaseResponseBean<DataBean>>())
+                .subscribeOn(Schedulers.io());
+    }
+    /**
+     * 获取APP启动页
+     */
+    public static Observable<Response<BaseResponseBean<DataBean>>> commonGetAppStartupPage() {
+        return OkGo.<BaseResponseBean<DataBean>>post(SERVLET_URL + "common/getAppStartupPage")
                 .converter(new NewsCallback<BaseResponseBean<DataBean>>() {
                     @Override
                     public void onSuccess(Response<BaseResponseBean<DataBean>> response) {
@@ -565,8 +589,8 @@ public class CloudApi {
      */
     public static Observable<Response<BaseResponseBean<BaseListBean<DataBean>>>> homeVediosByClassify(int pageNumber, String classify) {
         return OkGo.<BaseResponseBean<BaseListBean<DataBean>>>post(SERVLET_URL + "home/vediosByClassify")
-                .params("start", pageNumber)
-                .params("limit", Constants.pageSize)
+                .params("pageIndex", pageNumber)
+                .params("pageSize", Constants.pageSize)
                 .params("classify", classify)
                 .converter(new NewsCallback<BaseResponseBean<BaseListBean<DataBean>>>() {
                     @Override

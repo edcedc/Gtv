@@ -15,6 +15,7 @@ import android.widget.ImageView;
 
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.StringUtils;
+import com.lzy.okgo.model.Response;
 import com.yanzhenjie.permission.Action;
 import com.yanzhenjie.permission.AndPermission;
 import com.yanzhenjie.permission.Permission;
@@ -23,11 +24,14 @@ import com.yc.gtv.R;
 import com.yc.gtv.base.BaseFragment;
 import com.yc.gtv.base.BasePresenter;
 import com.yc.gtv.base.User;
+import com.yc.gtv.bean.BaseResponseBean;
+import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.callback.Code;
 import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.FSplashBinding;
 import com.yc.gtv.event.LoginInEvent;
+import com.yc.gtv.utils.GlideLoadingUtils;
 import com.yc.gtv.utils.cache.ShareSessionIdCache;
 import com.yc.gtv.utils.cache.SharedAccount;
 import com.yc.gtv.weight.RuntimeRationale;
@@ -37,6 +41,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.bingoogolapple.bgabanner.BGABanner;
 import io.reactivex.Observer;
@@ -52,6 +58,8 @@ import io.reactivex.functions.Consumer;
 
 public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> implements BGABanner.Delegate, BGABanner.Adapter<ImageView, Integer> {
 
+    private String linkUrl;
+
     public static SplashFrg newInstance() {
         Bundle args = new Bundle();
         SplashFrg fragment = new SplashFrg();
@@ -61,9 +69,13 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
 
     private List<Integer> listImage = new ArrayList<>();
     private List<String> tips = new ArrayList<String>();
+    private int recLen = 0;
 
     private final int mHandle_splash = 0;
     private final int mHandle_permission = 1;
+    private boolean isPause = false;
+    private Timer mTimer;
+    private TimerTask mTimerTask;
 
     private Activity act;
 
@@ -85,7 +97,7 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
     @Override
     protected void initView(View view) {
         act = getActivity();
-        setSofia(true);
+//        setSofia(true);
        /* mB.banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -107,6 +119,39 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
             }
         });*/
         handler.sendEmptyMessageDelayed(mHandle_permission, 1000);
+        mB.tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startLogin();
+            }
+        });
+        mB.ivImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!StringUtils.isEmpty(linkUrl)){
+                    if (recLen == 0) {
+                        return;
+                    }
+                    if (!isPause) {
+                        isPause = true;
+                        mTimer.cancel();
+                    }
+                    UIHelper.startHtmlAct(linkUrl);
+                    //如果 curTime == 0，则不需要执行此操
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onSupportVisible() {
+        super.onSupportVisible();
+        if (recLen != 0 && isPause) {
+            destroyTimer();
+            initTimer();
+            mTimer.schedule(mTimerTask, 0, 1000);
+            isPause = false;
+        }
     }
 
     @Override
@@ -130,10 +175,16 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
                 case mHandle_permission:
                     setHasPermission();
                     break;
+                case 2:
+                    mB.tvTime.setText(recLen + "跳过");
+                    if (recLen <= 0) {
+                        mTimer.cancel();
+                        startLogin();
+                    }
+                    break;
             }
         }
     };
-
 
     @Override
     public void onDestroy() {
@@ -142,6 +193,8 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
             handler.removeCallbacksAndMessages(null);
             handler = null;
         }
+        destroyTimer();
+
     }
 
     /**
@@ -231,6 +284,55 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
      * 权限都成功
      */
     private void setPermissionOk() {
+        advertisement();
+    }
+
+    private void advertisement(){
+        CloudApi.commonGetAppStartupPage()
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<BaseResponseBean<DataBean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<BaseResponseBean<DataBean>> baseResponseBeanResponse) {
+                        if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
+                            DataBean data = baseResponseBeanResponse.body().data;
+                            if (data != null){
+                                String imageUrl = data.getImageUrl();
+                                mB.ivImg.setVisibility(View.VISIBLE);
+                                GlideLoadingUtils.load(act, imageUrl, mB.ivImg);
+                                mB.tvTime.setVisibility(View.VISIBLE);
+                                linkUrl = data.getLinkUrl();
+                                recLen = 5;
+                                destroyTimer();
+                                initTimer();
+                                isPause = false;
+                                mTimer.schedule(mTimerTask, 0, 1000);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    private void startLogin(){
         SharedAccount account = SharedAccount.getInstance(act);
         String mobile = account.getMobile();
         String pwd = account.getPwd();
@@ -289,5 +391,37 @@ public class SplashFrg extends BaseFragment<BasePresenter, FSplashBinding> imple
     private void startNext() {
         UIHelper.startMainAct();
         ActivityUtils.finishAllActivities();
+    }
+
+
+    /**
+     * 初始化Timer
+     */
+    public void initTimer() {
+        mTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                if (recLen == 0) {
+                    startLogin();
+                } else {
+                    recLen -= 1;
+                }
+               handler.sendEmptyMessage(2);
+            }
+        };
+        mTimer = new Timer();
+    }
+    /**
+     * destory上次使用的
+     */
+    public void destroyTimer() {
+        if (mTimer != null) {
+            mTimer.cancel();
+            mTimer = null;
+        }
+        if (mTimerTask != null) {
+            mTimerTask.cancel();
+            mTimerTask = null;
+        }
     }
 }

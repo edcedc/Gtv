@@ -34,7 +34,6 @@ public class HomeChildFrg extends BaseFragment<HomeChildPresenter, FHomeChildBin
     private boolean isRefresh = false;
     private String id;
 
-
     @Override
     public void initPresenter() {
         mPresenter.init(this);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/iv_img"
+        android:scaleType="fitXY"
+        android:src="@mipmap/place_holder"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px218" />
+    
+    <TextView
+        android:id="@+id/tv_text"
+        android:layout_margin="@dimen/px20"
+        android:singleLine="true"
+        android:ellipsize="end"
+        style="@style/Tv14black" />
+
+</LinearLayout>

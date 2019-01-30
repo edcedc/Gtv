@@ -43,7 +43,7 @@ public class GalleryPresenter extends GalleryContract.Presenter{
                                 List<DataBean> list = data.getRows();
                                 if (list != null && list.size() != 0){
                                     mView.setData(list);
-                                    mView.setRefreshLayoutMode(data.getPageCount());
+                                    mView.setRefreshLayoutMode(data.getTotal());
                                     mView.hideLoading();
                                 }else {
                                     mView.showLoadEmpty();

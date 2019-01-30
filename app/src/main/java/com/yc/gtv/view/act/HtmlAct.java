@@ -69,7 +69,7 @@ public class HtmlAct extends BaseActivity<BasePresenter, AHtmlBinding> {
                 getHtmlUrl();
                 break;
             default:
-                setTitle("详情");
+                setTitle("广告详情");
                 mB.webView.loadUrl(url);
                 break;
         }

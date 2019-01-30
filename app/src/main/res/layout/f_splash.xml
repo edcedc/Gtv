@@ -13,6 +13,7 @@
 
         <cn.bingoogolapple.bgabanner.BGABanner
             android:id="@+id/banner"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:banner_pageChangeDuration="1000"
@@ -21,6 +22,26 @@
             app:banner_pointDrawable="@drawable/bga_banner_selector"
             app:banner_pointTopBottomMargin="15dp"
             app:banner_transitionEffect="fade" />
+
+        <ImageView
+            android:id="@+id/iv_img"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.flyco.roundview.RoundTextView
+            android:id="@+id/tv_time"
+            android:visibility="gone"
+            android:text="3跳过"
+            android:layout_margin="@dimen/px50"
+            android:layout_gravity="right"
+            android:textColor="@color/white"
+            app:rv_cornerRadius="@dimen/px20"
+            android:padding="@dimen/px10"
+            app:rv_backgroundColor="@color/tab_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
     </FrameLayout>
 </layout>

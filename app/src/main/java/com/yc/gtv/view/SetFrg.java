@@ -17,6 +17,8 @@ import com.yc.gtv.base.BasePresenter;
 import com.yc.gtv.base.User;
 import com.yc.gtv.bean.DataBean;
 import com.yc.gtv.bean.SaveSearchListBean;
+import com.yc.gtv.callback.Code;
+import com.yc.gtv.controller.CloudApi;
 import com.yc.gtv.controller.UIHelper;
 import com.yc.gtv.databinding.BRecyclerBinding;
 import com.yc.gtv.utils.BitmapFixedWidthTransform;
@@ -25,10 +27,16 @@ import com.yc.gtv.utils.PopupWindowTool;
 import com.yc.gtv.utils.cache.ShareSessionIdCache;
 import com.yc.gtv.utils.cache.SharedAccount;
 
+import org.json.JSONObject;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by edison on 2018/11/20.
@@ -127,48 +135,41 @@ public class SetFrg extends BaseFragment<BasePresenter, BRecyclerBinding>{
     }
 
     private void initVersion() {
-        Uri uri = Uri.parse("https://www.baidu.com");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
 
-        /*CloudApi.versionVersionClient()
+
+        CloudApi.versionVersionClient()
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
                     public void accept(Disposable disposable) throws Exception {
-                        listener.showLoading();
+                        showLoading();
                     }
                 })
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Response<BaseResponseBean<DataBean>>>() {
+                .subscribe(new Observer<JSONObject>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        listener.onAddDisposable(d);
+
                     }
 
                     @Override
-                    public void onNext(Response<BaseResponseBean<DataBean>> baseResponseBeanResponse) {
-                        if (baseResponseBeanResponse.body().code == Code.CODE_SUCCESS){
-                            DataBean data = baseResponseBeanResponse.body().data;
-                            if (data != null){
-                                String appVersionName = AppUtils.getAppVersionName();
-                                if (!appVersionName.equals(data.getVersion())){
-                                    listener.showVersion(data.getUrl(), data.getVersion());
-                                }
-                            }
-                        }else {
-                            ToastUtils.showShort(baseResponseBeanResponse.body().desc);
+                    public void onNext(JSONObject jsonObject) {
+                        if (jsonObject.optInt("code") == Code.CODE_SUCCESS){
+                            Uri uri = Uri.parse(jsonObject.optString("data"));
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        listener.onError(e);
+
                     }
 
                     @Override
                     public void onComplete() {
-                        listener.hideLoading();
+                        hideLoading();
+
                     }
-                });*/
+                });
     }
 }

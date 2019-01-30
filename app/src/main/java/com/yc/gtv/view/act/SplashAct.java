@@ -30,7 +30,7 @@ public class SplashAct extends BaseActivity {
 
     @Override
     protected void initView() {
-        setSofia(true);
+//        setSofia(true);
         if (findFragment(SplashFrg.class) == null) {
             loadRootFragment(R.id.fl_container, SplashFrg.newInstance());
         }

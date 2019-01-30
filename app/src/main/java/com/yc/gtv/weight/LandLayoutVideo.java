@@ -46,7 +46,7 @@ public class LandLayoutVideo extends StandardGSYVideoPlayer {
                 return true;
             }
         });
-
+        findViewById(R.id.tv_resolving_power);
 //        findViewById(R.id.tv_resolving_power).setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

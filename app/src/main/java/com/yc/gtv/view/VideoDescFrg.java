@@ -385,6 +385,21 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
         }
         isCollection = data.isCollected();
         setCollection(isCollection);
+
+        if (claritys.length == 0)return;
+        final List<SwitchVideoModel> list = new ArrayList<>();
+        for (int i : claritys){
+            SwitchVideoModel bean = new SwitchVideoModel();
+            bean.setNum(i);
+            if (i == 1){
+                tvResolvingPower.setText("480P");
+            }else if (i == 2){
+                tvResolvingPower.setText("720P");
+            }else {
+                tvResolvingPower.setText("1080P");
+            }
+            list.add(bean);
+        }
     }
 
     @Override

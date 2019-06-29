@@ -154,11 +154,11 @@ public class VideoDescFrg extends BaseFragment<VideoDescPresenter, FVideoDescBin
                             isOnePlay = false;
                             mPresenter.onVideoRecordViewTimes();
                         }
-                        if (userInfo != null && !userInfo.optBoolean("vip") && residualViewCount <= 0){
-                            downTimer.start();
-                        }else if (userInfo == null && residualViewCount <= 0){
-                            downTimer.start();
-                        }
+//                        if (userInfo != null && !userInfo.optBoolean("vip") && residualViewCount <= 0){
+//                            downTimer.start();
+//                        }else if (userInfo == null && residualViewCount <= 0){
+//                            downTimer.start();
+//                        }
                     }
 
                     @Override

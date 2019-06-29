@@ -332,6 +332,10 @@ public class CloudApi {
      * 7.2、获取视频详情 (主页接口部分)
      */
     public static Observable<Response<BaseResponseBean<DataBean>>> videoGetVideoDeatil(String id) {
+        int lll = 0;
+        for(int j = 0; j< 100; j++){
+            lll = (int)((Math.random()*9+1)*100000);
+        }
         return OkGo.<BaseResponseBean<DataBean>>post(SERVLET_URL + "video/getVideoDeatil")
                 .headers("authorization", ShareSessionIdCache.getInstance(Utils.getApp()).getSessionId())
                 .params("videoId", id)

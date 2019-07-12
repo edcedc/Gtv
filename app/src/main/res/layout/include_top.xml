@@ -9,7 +9,7 @@
 
     <com.yanzhenjie.sofia.StatusView
         android:id="@+id/status_view"
-        android:background="@color/reb_7E394E"
+        android:background="@color/blue_18255a"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:layout_gravity="top"
-        android:background="@color/reb_FC739D"
+        android:background="@color/blue_18255a"
         android:theme="@style/AppTheme.AppBarLight"
         app:navigationIcon="@mipmap/back"
         app:popupTheme="@style/AppTheme.Popup"
